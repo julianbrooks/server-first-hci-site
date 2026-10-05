@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.5">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Instrumentation – Server-First HCI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/08-pilots.html" rel="next">
+<link href="../chapters/06-parity-and-validation.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0435b4823c1a87252ebb8840a3236ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-c723a02369364f0a3f545b12e13627fe.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0435b4823c1a87252ebb8840a3236ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-1b6a09301176eca14911d74d35d4c872.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-37c69bc02de78d2ffd4270d4ad989962.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-1b6a09301176eca14911d74d35d4c872.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-instrumentation.html">Evaluating</a></li><li class="breadcrumb-item"><a href="../chapters/07-instrumentation.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Instrumentation</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Server-First HCI</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Foundations</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-server-first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Server-first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-needs-finding-and-consent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Needs-finding and consent</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Building inclusively</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-inline-edit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inline edit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-auditing-and-fixing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Auditing and fixing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-partials-and-pagination.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Partials and pagination</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-parity-and-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Parity and validation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Evaluating</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-instrumentation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Instrumentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-pilots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Pilots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-analysis-and-prioritisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Analysis and prioritisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-redesign-and-verification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Redesign and verification</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Communicating</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-crit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Crit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-portfolio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Portfolio</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">The module</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../module/schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../module/assessment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Assessment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../module/institution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Institution</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/kotlin-primer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Enough Kotlin to read this book</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-pebble.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Pebble</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-htmx-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">HTMX patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-accessibility-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Accessibility testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-privacy-and-consent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Privacy and consent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-participant-information-sheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Participant information sheet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/g-consent-form.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Consent form</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/h-evaluation-metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Evaluation metrics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/i-screenshot-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Screenshot evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/j-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/k-learning-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">Learning outcomes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#measuring-rather-than-asking" id="toc-measuring-rather-than-asking" class="nav-link active" data-scroll-target="#measuring-rather-than-asking"><span class="header-section-number">7.1</span> Measuring rather than asking</a></li>
+  <li><a href="#activity-1-write-the-evaluation-plan" id="toc-activity-1-write-the-evaluation-plan" class="nav-link" data-scroll-target="#activity-1-write-the-evaluation-plan"><span class="header-section-number">7.2</span> Activity 1: write the evaluation plan</a></li>
+  <li><a href="#activity-2-read-the-instrumentation" id="toc-activity-2-read-the-instrumentation" class="nav-link" data-scroll-target="#activity-2-read-the-instrumentation"><span class="header-section-number">7.3</span> Activity 2: read the instrumentation</a></li>
+  <li><a href="#activity-3-label-a-participants-session" id="toc-activity-3-label-a-participants-session" class="nav-link" data-scroll-target="#activity-3-label-a-participants-session"><span class="header-section-number">7.4</span> Activity 3: label a participant's session</a></li>
+  <li><a href="#activity-4-dry-run-both-modes" id="toc-activity-4-dry-run-both-modes" class="nav-link" data-scroll-target="#activity-4-dry-run-both-modes"><span class="header-section-number">7.5</span> Activity 4: dry run both modes</a></li>
+  <li><a href="#what-to-record" id="toc-what-to-record" class="nav-link" data-scroll-target="#what-to-record"><span class="header-section-number">7.6</span> What to record</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">7.7</span> Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<div class="preview-banner" role="note" aria-label="Pre-print notice">
+  <p><strong>Pre-print preview.</strong> A draft of <em>Server-First HCI</em> published for review. Every chapter is drafted; none is final. Corrections are welcome, and the preface says how the book is made.</p>
+</div>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-instrumentation.html">Evaluating</a></li><li class="breadcrumb-item"><a href="../chapters/07-instrumentation.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Instrumentation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-instrumentation" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Instrumentation</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>By the end you have an evaluation plan that names three to five tasks, each with a code, a success criterion and a definition of error, and you have watched the reference code write one metrics row per request in both modes and label those rows with a participant code.</p>
+<!-- Budget: 1,500 words of prose. Source material: src/wk09/wk9-lab1-eval-plan-instrumentation.md, src/wk09/wk9-lab1-student-guide.md. Code: include from server-first-hci-kotlin tag week-09; the one CSV excerpt is from the example data at tag week-10. Revised on 5 October 2026 against the author's teaching demonstration (docs/source-material/mmu-demo-2026/). The row shapes in Activity 4 were confirmed by the browser pass (e2e/REPORT-2026-10-04.md in the Kotlin repository); the Chrome and Firefox click paths for turning JavaScript off were not exercised by it and are from memory. -->
+<p>Before you start, check out the <code>week-09</code> tag and run <code>./gradlew build</code>; if <code>timed</code> is unresolved anywhere, you are on an earlier tag. Have <code>research/stories.md</code> and <code>backlog/backlog.csv</code> from <a href="02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a> open. Read the metric definitions in <a href="../appendices/h-evaluation-metrics.html" class="quarto-xref"><span>Appendix I</span></a> once; this chapter uses them without restating them.</p>
+<section id="measuring-rather-than-asking" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="measuring-rather-than-asking"><span class="header-section-number">7.1</span> Measuring rather than asking</h2>
+<p>This chapter and the next find out what happens when people use the prototype, by measuring. The measurement comes from the server: every request the application handles writes one row to a metrics file. Nothing else is involved: no analytics script in the page, no third party, and nothing about the person beyond the pseudonym in the session column, which they can ask to have deleted. That log is a narrow instrument. It sees that a request arrived, what it was for, whether it succeeded, how long the server took, and when. It does not see the participant read the screen, hesitate, look for a button, or say "did that work?". Those come from the person sitting next to the participant with a notebook, which is <a href="08-pilots.html" class="quarto-xref"><span>Chapter 8</span></a>; the two halves are put together in <a href="09-analysis-and-prioritisation.html" class="quarto-xref"><span>Chapter 9</span></a>.</p>
+</section>
+<section id="activity-1-write-the-evaluation-plan" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="activity-1-write-the-evaluation-plan"><span class="header-section-number">7.2</span> Activity 1: write the evaluation plan</h2>
+<p>Create <code>research/plan.md</code>. It has three parts: the tasks, the measures, and the design of the sessions.</p>
+<p>A task is something a participant is asked to do with the task list, written as a scenario you can read aloud: "You have been asked to find every task about the quarterly report. Use the filter and tell me how many there are." Each task carries one of the codes in <code>utils/TaskCodes.kt</code>, because the metrics file records the code and nothing else about the task, so the plan has to be the place that says what <code>T1_filter</code> meant. Choose three to five of the five participant tasks: filter, edit, add, delete and mark done. <code>T0_list</code> is the page load and the redirects that follow a change without JavaScript, not a task anyone is asked to do.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/utils/TaskCodes.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="src/main/kotlin/utils/TaskCodes.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> <span class="im">utils</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"> * Codes for the tasks participants carry out in the Week 9 evaluation. They are the</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"> * task_code column of the metrics and are stated nowhere else.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">object</span> TaskCodes <span class="op">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">val</span> <span class="va">LIST</span> <span class="op">=</span> <span class="st">"T0_list"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">val</span> <span class="va">FILTER</span> <span class="op">=</span> <span class="st">"T1_filter"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">val</span> <span class="va">EDIT</span> <span class="op">=</span> <span class="st">"T2_edit"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">val</span> <span class="va">ADD</span> <span class="op">=</span> <span class="st">"T3_add"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">val</span> <span class="va">DELETE</span> <span class="op">=</span> <span class="st">"T4_delete"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="kw">val</span> <span class="va">TOGGLE</span> <span class="op">=</span> <span class="st">"T5_toggle"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">all</span> <span class="op">=</span> listOf<span class="op">(</span>LIST<span class="op">,</span> FILTER<span class="op">,</span> EDIT<span class="op">,</span> ADD<span class="op">,</span> DELETE<span class="op">,</span> TOGGLE<span class="op">)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>For each task write the success criterion as something the facilitator can see or hear: the participant says "three", the new title is in the list, the task is gone. Then write what counts as an error. The log counts one kind of error on its own, a submission the server rejected, which it records as a <code>validation_error</code> row with the reason in the <code>outcome</code> column. Everything else, such as deleting the wrong task, succeeds as far as the server is concerned and is an error only if the note-taker writes it down. Say in the plan which errors you expect from the log and which from the notes, so that in <a href="09-analysis-and-prioritisation.html" class="quarto-xref"><span>Chapter 9</span></a> you are not tempted to add the two together.</p>
+<p>Write the tasks against seed data you control. Decide the ten or so titles the list will hold at the start of every session, so that a scenario can name "Submit invoices" and the participant can find it; Activity 4 shows how to save them. Put delete last, because it is the destructive one, and give each task a time after which the facilitator moves on; two minutes is enough for any of these.</p>
+<p>The measures section says which metrics you will report and names <a href="../appendices/h-evaluation-metrics.html" class="quarto-xref"><span>Appendix I</span></a> as the definition of each. The design section is short: four participants, every participant does the tasks in both modes, two start with HTMX and two without JavaScript, and the comparison is within each participant. <a href="08-pilots.html" class="quarto-xref"><span>Chapter 8</span></a> explains why, and what that design can and cannot support; the plan only has to record it.</p>
+</section>
+<section id="activity-2-read-the-instrumentation" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="activity-2-read-the-instrumentation"><span class="header-section-number">7.3</span> Activity 2: read the instrumentation</h2>
+<p>At the <code>week-09</code> tag the instrumentation is already in the code. Start with <code>utils/Logger.kt</code>. The comment on <code>LogEntry</code> is the schema of the metrics file. It is the only place in the code or the book where the columns are listed, and every other page sends you here.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/utils/Logger.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="src/main/kotlin/utils/Logger.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> <span class="im">utils</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">File</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">time</span><span class="op">.</span><span class="im">Instant</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">time</span><span class="op">.</span><span class="im">temporal</span><span class="op">.</span><span class="im">ChronoUnit</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"> * One row of the metrics file, data/metrics.csv. This comment is the schema; nothing else</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"> * restates it. The columns, in order:</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"> *</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `ts_iso`: when the row was written, UTC, ISO 8601, for example `2026-11-18T14:03:21.512Z`.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `session_id`: the value of the `sid` cookie. A facilitator sets it to a participant</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"> *   code before a session; otherwise it is six random hex characters.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `request_id`: `r_` followed by eight hex characters, unique to one request.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `task_code`: one of the [TaskCodes] constants.</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `step`: `success`, `validation_error`, `client_error` or `server_error`.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `outcome`: `ok` for success; for a validation error the code from `Task.validate`</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"> *   (`blank_title`, `min_length`, `max_length`); for another error `http_` and the status,</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"> *   or the exception class name.</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `ms`: the server's time handling the request, in milliseconds. It is not time on task.</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"> *   Time on task is the gap between a participant's consecutive `ts_iso` values.</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `http_status`: the status code the server sent.</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"> * - `js_mode`: `htmx` when HTMX made the request, otherwise `nojs`.</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"> *</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"> * Every field is a controlled token or a number, so no field contains a comma.</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="kw">class</span> LogEntry<span class="op">(</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">sessionId</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">requestId</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">taskCode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">step</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">outcome</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">durationMs</span><span class="op">:</span> <span class="dt">Long</span><span class="op">,</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">statusCode</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">jsMode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">timestamp</span><span class="op">:</span> <span class="dt">Instant</span> <span class="op">=</span> Instant<span class="op">.</span>now<span class="op">(),</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">toCsvLine</span><span class="op">():</span> <span class="dt">String</span> <span class="op">=</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        listOf<span class="op">(</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            timestamp<span class="op">.</span>truncatedTo<span class="op">(</span>ChronoUnit<span class="op">.</span>MILLIS<span class="op">).</span>toString<span class="op">(),</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>            sessionId<span class="op">,</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            requestId<span class="op">,</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>            taskCode<span class="op">,</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>            step<span class="op">,</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>            outcome<span class="op">,</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>            durationMs<span class="op">,</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>            statusCode<span class="op">,</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            jsMode<span class="op">,</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="op">).</span>joinToString<span class="op">(</span><span class="st">","</span><span class="op">)</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">companion</span> <span class="kw">object</span> <span class="op">{</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> <span class="kw">val</span> <span class="va">HEADER</span> <span class="op">=</span> <span class="st">"ts_iso,session_id,request_id,task_code,step,outcome,ms,http_status,js_mode"</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co"> * Appends [LogEntry] rows to the metrics file, writing the header first when the file is</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="co"> * new or empty. The path can be changed with the `metrics.file` system property, which</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="co"> * the tests do so they never touch data/metrics.csv.</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="kw">object</span> Logger <span class="op">{</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">file</span><span class="op">:</span> File <span class="op">=</span> File<span class="op">(</span>System<span class="op">.</span>getProperty<span class="op">(</span><span class="st">"metrics.file"</span><span class="op">)</span> <span class="op">?:</span> <span class="st">"data/metrics.csv"</span><span class="op">)</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Synchronized</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">write</span><span class="op">(</span><span class="va">entry</span><span class="op">:</span> <span class="dt">LogEntry</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(!</span>file<span class="op">.</span>exists<span class="op">()</span> <span class="op">||</span> file<span class="op">.</span>length<span class="op">()</span> <span class="op">==</span> <span class="dv">0L</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>            file<span class="op">.</span>parentFile<span class="op">?.</span>mkdirs<span class="op">()</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>            file<span class="op">.</span>writeText<span class="op">(</span>LogEntry<span class="op">.</span>HEADER <span class="op">+</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">)</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        file<span class="op">.</span>appendText<span class="op">(</span>entry<span class="op">.</span>toCsvLine<span class="op">()</span> <span class="op">+</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">)</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">success</span><span class="op">(</span><span class="va">sessionId</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">requestId</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">taskCode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">durationMs</span><span class="op">:</span> <span class="dt">Long</span><span class="op">,</span> <span class="va">statusCode</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span> <span class="va">jsMode</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span> <span class="op">=</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        write<span class="op">(</span>LogEntry<span class="op">(</span>sessionId<span class="op">,</span> requestId<span class="op">,</span> taskCode<span class="op">,</span> <span class="st">"success"</span><span class="op">,</span> <span class="st">"ok"</span><span class="op">,</span> durationMs<span class="op">,</span> statusCode<span class="op">,</span> jsMode<span class="op">))</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> <span class="fu">validationError</span><span class="op">(</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">sessionId</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        <span class="va">requestId</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        <span class="va">taskCode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        <span class="va">outcome</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        <span class="va">durationMs</span><span class="op">:</span> <span class="dt">Long</span><span class="op">,</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>        <span class="va">statusCode</span><span class="op">:</span> <span class="dt">Int</span><span class="op">,</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>        <span class="va">jsMode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    <span class="op">)</span> <span class="op">=</span> write<span class="op">(</span>LogEntry<span class="op">(</span>sessionId<span class="op">,</span> requestId<span class="op">,</span> taskCode<span class="op">,</span> <span class="st">"validation_error"</span><span class="op">,</span> outcome<span class="op">,</span> durationMs<span class="op">,</span> statusCode<span class="op">,</span> jsMode<span class="op">))</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two things in that comment matter. The <code>ms</code> column is the time the server spent handling one request. It is not time on task, which is the gap between a participant's consecutive timestamps; the 2025 version of this material called <code>ms</code> "server-timed time-on-task", and that was wrong. And <code>session_id</code> is whatever the <code>sid</code> cookie holds, which is why Activity 3 sets that cookie to a participant code.</p>
+<p><code>utils/Timing.kt</code> is where rows are written. Every route handler runs inside <code>timed()</code>, which reads or sets the cookie, times the handler, and writes one row when it finishes: <code>success</code>, or <code>validation_error</code> when the handler reported one through <code>recordValidationError</code>, or <code>client_error</code> or <code>server_error</code> from the status. One request, one row, is what makes an error rate possible. The 2025 code logged a validation error and then a success for the same request and counted every failure twice.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/utils/Timing.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="src/main/kotlin/utils/Timing.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> <span class="im">utils</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">Cookie</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">application</span><span class="op">.</span><span class="im">ApplicationCall</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">AttributeKey</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">isHtmxRequest</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">UUID</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">/** The name of the cookie that identifies a participant's session in the metrics. */</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> <span class="kw">val</span> <span class="va">SESSION_COOKIE</span> <span class="op">=</span> <span class="st">"sid"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">val</span> <span class="va">SessionCodeKey</span> <span class="op">=</span> AttributeKey<span class="op">&lt;</span><span class="kw">String</span><span class="op">&gt;(</span><span class="st">"sessionCode"</span><span class="op">)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">val</span> <span class="va">RequestIdKey</span> <span class="op">=</span> AttributeKey<span class="op">&lt;</span><span class="kw">String</span><span class="op">&gt;(</span><span class="st">"requestId"</span><span class="op">)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">val</span> <span class="va">ValidationOutcomeKey</span> <span class="op">=</span> AttributeKey<span class="op">&lt;</span><span class="kw">String</span><span class="op">&gt;(</span><span class="st">"validationOutcome"</span><span class="op">)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"> * Runs [block] and writes one metrics row for the request: `success`, or</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"> * `validation_error` when the handler called [recordValidationError], or `client_error`</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"> * or `server_error` from the response status, or `server_error` when [block] throws.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>suspend <span class="kw">fun</span> <span class="op">&lt;</span><span class="dt">T</span><span class="op">&gt;</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">timed</span><span class="op">(</span><span class="va">taskCode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">jsMode</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">block</span><span class="op">:</span> <span class="dt">suspend</span> <span class="va">ApplicationCall</span>.(<span class="op">)</span> -&gt; <span class="fu">T</span>)<span class="op">:</span> <span class="dt">T</span> <span class="op">{</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">sessionCode</span> <span class="op">=</span> ensureSessionCode<span class="op">()</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">requestId</span> <span class="op">=</span> ensureRequestId<span class="op">()</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">started</span> <span class="op">=</span> System<span class="op">.</span>nanoTime<span class="op">()</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">result</span> <span class="op">=</span> block<span class="op">()</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">ms</span> <span class="op">=</span> elapsedMs<span class="op">(</span>started<span class="op">)</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">status</span> <span class="op">=</span> response<span class="op">.</span>status<span class="op">()?.</span>value <span class="op">?:</span> <span class="dv">200</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">validationOutcome</span> <span class="op">=</span> attributes<span class="op">.</span>getOrNull<span class="op">(</span>ValidationOutcomeKey<span class="op">)</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> <span class="op">{</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            validationOutcome <span class="op">!=</span> <span class="kw">null</span> <span class="op">-&gt;</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                Logger<span class="op">.</span>validationError<span class="op">(</span>sessionCode<span class="op">,</span> requestId<span class="op">,</span> taskCode<span class="op">,</span> validationOutcome<span class="op">,</span> ms<span class="op">,</span> status<span class="op">,</span> jsMode<span class="op">)</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>            status <span class="op">&gt;=</span> <span class="dv">400</span> <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                <span class="kw">val</span> <span class="va">step</span> <span class="op">=</span> <span class="cf">if</span> <span class="op">(</span>status <span class="op">&gt;=</span> <span class="dv">500</span><span class="op">)</span> <span class="st">"server_error"</span> <span class="cf">else</span> <span class="st">"client_error"</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                Logger<span class="op">.</span>write<span class="op">(</span>LogEntry<span class="op">(</span>sessionCode<span class="op">,</span> requestId<span class="op">,</span> taskCode<span class="op">,</span> step<span class="op">,</span> <span class="st">"http_</span><span class="ss">$status</span><span class="st">"</span><span class="op">,</span> ms<span class="op">,</span> status<span class="op">,</span> jsMode<span class="op">))</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="op">-&gt;</span> Logger<span class="op">.</span>success<span class="op">(</span>sessionCode<span class="op">,</span> requestId<span class="op">,</span> taskCode<span class="op">,</span> ms<span class="op">,</span> status<span class="op">,</span> jsMode<span class="op">)</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> result</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span>e<span class="op">:</span> Exception<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">outcome</span> <span class="op">=</span> e<span class="op">::</span><span class="kw">class</span>.simpleName ?<span class="op">:</span> "<span class="dt">exception</span>"</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="dt">Logger</span>.<span class="dt">write</span><span class="op">(</span><span class="va">LogEntry</span>(<span class="va">sessionCode</span><span class="op">,</span> <span class="va">requestId</span><span class="op">,</span> <span class="va">taskCode</span><span class="op">,</span> "<span class="va">server_error</span>"<span class="op">,</span> <span class="va">outcome</span><span class="op">,</span> <span class="va">elapsedMs</span>(<span class="va">started</span><span class="op">),</span> 500<span class="op">,</span> <span class="dt">jsMode</span>))</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="kw">throw</span> e</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">/** Tells [timed] that this request failed validation with [outcome], one of the codes from `Task.validate`. */</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">recordValidationError</span><span class="op">(</span><span class="va">outcome</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span> <span class="op">=</span> attributes<span class="op">.</span>put<span class="op">(</span>ValidationOutcomeKey<span class="op">,</span> outcome<span class="op">)</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co">/** The js_mode value for this request. */</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">jsMode</span><span class="op">():</span> <span class="dt">String</span> <span class="op">=</span> <span class="cf">if</span> <span class="op">(</span>isHtmxRequest<span class="op">())</span> <span class="st">"htmx"</span> <span class="cf">else</span> <span class="st">"nojs"</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co">/** The session code for this request, if one has been set by [timed] or sent as a cookie. */</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">sessionCode</span><span class="op">():</span> <span class="dt">String</span><span class="op">?</span> <span class="op">=</span> attributes<span class="op">.</span>getOrNull<span class="op">(</span>SessionCodeKey<span class="op">)</span> <span class="op">?:</span> request<span class="op">.</span>cookies<span class="op">[</span>SESSION_COOKIE<span class="op">]</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"> * Reads the `sid` cookie or sets a new one. The cookie is readable from JavaScript on</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co"> * purpose: a facilitator sets it to a participant code in the browser console before a</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co"> * session, for example `document.cookie = "sid=P3; path=/"`.</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">ensureSessionCode</span><span class="op">():</span> <span class="dt">String</span> <span class="op">{</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    attributes<span class="op">.</span>getOrNull<span class="op">(</span>SessionCodeKey<span class="op">)?.</span>let <span class="op">{</span> <span class="kw">return</span> it <span class="op">}</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">code</span> <span class="op">=</span> request<span class="op">.</span>cookies<span class="op">[</span>SESSION_COOKIE<span class="op">]</span> <span class="op">?:</span> newCode<span class="op">(</span><span class="dv">6</span><span class="op">).</span>also <span class="op">{</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>        response<span class="op">.</span>cookies<span class="op">.</span>append<span class="op">(</span>Cookie<span class="op">(</span>name <span class="op">=</span> SESSION_COOKIE<span class="op">,</span> value <span class="op">=</span> it<span class="op">,</span> path <span class="op">=</span> <span class="st">"/"</span><span class="op">,</span> httpOnly <span class="op">=</span> <span class="kw">false</span><span class="op">))</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    attributes<span class="op">.</span>put<span class="op">(</span>SessionCodeKey<span class="op">,</span> code<span class="op">)</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> code</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">ensureRequestId</span><span class="op">():</span> <span class="dt">String</span> <span class="op">=</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    attributes<span class="op">.</span>getOrNull<span class="op">(</span>RequestIdKey<span class="op">)</span> <span class="op">?:</span> <span class="st">"r_</span><span class="ss">${</span>newCode<span class="op">(</span><span class="dv">8</span><span class="op">)</span><span class="ss">}</span><span class="st">"</span><span class="op">.</span>also <span class="op">{</span> attributes<span class="op">.</span>put<span class="op">(</span>RequestIdKey<span class="op">,</span> it<span class="op">)</span> <span class="op">}</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">newCode</span><span class="op">(</span><span class="va">length</span><span class="op">:</span> <span class="dt">Int</span><span class="op">)</span> <span class="op">=</span> UUID<span class="op">.</span>randomUUID<span class="op">().</span>toString<span class="op">().</span>replace<span class="op">(</span><span class="st">"-"</span><span class="op">,</span> <span class="st">""</span><span class="op">).</span>take<span class="op">(</span>length<span class="op">)</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">elapsedMs</span><span class="op">(</span><span class="va">startedNanos</span><span class="op">:</span> <span class="dt">Long</span><span class="op">)</span> <span class="op">=</span> <span class="op">(</span>System<span class="op">.</span>nanoTime<span class="op">()</span> <span class="op">-</span> startedNanos<span class="op">)</span> <span class="op">/</span> <span class="dv">1_000_000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>To see the two used together, read <code>addTask</code> in <code>routes/TaskRoutes.kt</code>. The validation branch records the code, then answers differently in each mode: a fragment with the error and the typed title for HTMX, a 303 redirect back to the list for a plain form. <code>timed()</code> writes the <code>validation_error</code> row either way, with the status the server sent.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/routes/TaskRoutes.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="src/main/kotlin/routes/TaskRoutes.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> suspend <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">addTask</span><span class="op">(</span><span class="va">store</span><span class="op">:</span> <span class="dt">TaskStore</span><span class="op">)</span> <span class="op">=</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    timed<span class="op">(</span>TaskCodes<span class="op">.</span>ADD<span class="op">,</span> jsMode<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">form</span> <span class="op">=</span> receiveParameters<span class="op">()</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">title</span> <span class="op">=</span> form<span class="op">[</span><span class="st">"title"</span><span class="op">]?.</span>trim<span class="op">().</span>orEmpty<span class="op">()</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">val</span> <span class="va">place</span> <span class="op">=</span> form<span class="op">.</span>place<span class="op">()</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> <span class="op">(</span><span class="kw">val</span> <span class="va">result</span> <span class="op">=</span> Task<span class="op">.</span>validate<span class="op">(</span>title<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="kw">is</span> ValidationResult<span class="op">.</span>Error <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                recordValidationError<span class="op">(</span>result<span class="op">.</span>code<span class="op">)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="op">(</span>isHtmxRequest<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">val</span> <span class="va">view</span> <span class="op">=</span> ListView<span class="op">.</span>from<span class="op">(</span>store<span class="op">,</span> place<span class="op">.</span>query<span class="op">,</span> place<span class="op">.</span>pageNumber<span class="op">)</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                    respondHtml<span class="op">(</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                        renderTaskArea<span class="op">(</span>view<span class="op">)</span> <span class="op">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                            renderAddForm<span class="op">(</span>view<span class="op">,</span> title<span class="op">,</span> result<span class="op">.</span>message<span class="op">)</span> <span class="op">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                            renderStatus<span class="op">(</span>result<span class="op">.</span>message<span class="op">,</span> isError <span class="op">=</span> <span class="kw">true</span><span class="op">),</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                    <span class="op">)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                    seeOther<span class="op">(</span>tasksPath<span class="op">(</span>place<span class="op">.</span>query<span class="op">,</span> place<span class="op">.</span>pageNumber<span class="op">,</span> error <span class="op">=</span> result<span class="op">.</span>code<span class="op">,</span> title <span class="op">=</span> title<span class="op">))</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            ValidationResult<span class="op">.</span>Success <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                <span class="kw">val</span> <span class="va">task</span> <span class="op">=</span> Task<span class="op">(</span>title <span class="op">=</span> title<span class="op">)</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                store<span class="op">.</span>add<span class="op">(</span>task<span class="op">)</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="op">(</span>isHtmxRequest<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// The new task is newest, so it is on page 1.</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">val</span> <span class="va">view</span> <span class="op">=</span> ListView<span class="op">.</span>from<span class="op">(</span>store<span class="op">,</span> place<span class="op">.</span>query<span class="op">,</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                    respondHtml<span class="op">(</span>renderTaskArea<span class="op">(</span>view<span class="op">)</span> <span class="op">+</span> renderAddForm<span class="op">(</span>view<span class="op">)</span> <span class="op">+</span> renderStatus<span class="op">(</span><span class="st">"Added </span><span class="sc">\"</span><span class="ss">${</span>task<span class="op">.</span>title<span class="ss">}</span><span class="sc">\"</span><span class="st">."</span><span class="op">))</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                    seeOther<span class="op">(</span>tasksPath<span class="op">(</span>place<span class="op">.</span>query<span class="op">,</span> <span class="dv">1</span><span class="op">))</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The status column is therefore truthful rather than tidy: a rejected submission is a 200 in HTMX mode and a 303 without JavaScript, and the <code>step</code> and <code>outcome</code> columns carry the meaning. Do not change the routes to send 400 on validation errors so that the column looks cleaner. HTMX 2 does not swap a 4xx response by default, and the participant would see nothing happen.</p>
+</section>
+<section id="activity-3-label-a-participants-session" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="activity-3-label-a-participants-session"><span class="header-section-number">7.4</span> Activity 3: label a participant's session</h2>
+<p>The first time a browser visits the application the server sets a <code>sid</code> cookie to six random hex characters, and every row that browser produces carries them. Before a pilot session you replace that value with the participant's pseudonym, so that the rows can be told apart later and deleted on request. The cookie is readable from JavaScript on purpose. Open the browser console on a tab showing the application, type <code>document.cookie = "sid=P1; path=/"</code> with the participant's code in place of <code>P1</code>, and reload the page.</p>
+<p>The check is the page footer, which shows the mode and the session code the next row will carry; the route tests at this tag assert both that the footer shows a sent code and that the row does. If the footer still shows six hex characters, the cookie was set in a console belonging to a different tab, or the page was not reloaded. A cookie set from <code>/tasks</code> without <code>path=/</code> is still honoured, because the browser defaults the path to <code>/</code>, so that is not the cause. If the footer shows the previous participant's code, you have not changed it, and two people's rows will merge under one pseudonym, which cannot be undone afterwards.</p>
+</section>
+<section id="activity-4-dry-run-both-modes" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="activity-4-dry-run-both-modes"><span class="header-section-number">7.5</span> Activity 4: dry run both modes</h2>
+<p>Start the server with <code>./gradlew run</code> from the project root. The metrics file is written relative to the directory the server starts in, so starting it from elsewhere puts the file elsewhere. Add your seed tasks through the form and copy <code>data/tasks.csv</code> to <code>research/seed-tasks.csv</code>; before each real session you copy it back. Then delete <code>data/metrics.csv</code>, so that the seeding does not sit in your data; the next request writes a fresh file with the header.</p>
+<p>Set the cookie to <code>DRY1</code> as in Activity 3 and work through your tasks once with JavaScript on: add a task, submit a two-letter title, filter, edit, mark done, delete. Then turn JavaScript off and do it again. In Chrome, open DevTools, press F1 for its settings and tick "Disable JavaScript" under Debugger; the setting holds only while DevTools stays open, so leave it open. In Firefox set <code>javascript.enabled</code> to false in <code>about:config</code>. Reload after the change and look at the footer: it says "no JavaScript" when the script did not run and "HTMX" when it did.</p>
+<p>Open <code>data/metrics.csv</code>. Expect one row for each thing you did, plus one <code>T0_list</code> row after each change without JavaScript, written about a second later by the GET the redirect caused. The excerpt below, from the example data in the <code>week-10</code> tag, shows a rejected add followed by a successful one in that mode, each followed by its redirect; the header is the one in the comment on <code>LogEntry</code>. Filtering with JavaScript on writes a <code>T1_filter</code> row for each pause while you type.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>data/example-metrics.csv (lines 13 to 17)</strong></pre>
+</div>
+<pre class="csv" data-filename="data/example-metrics.csv (lines 13 to 17)"><code>2026-11-18T14:12:20Z,P2,r_e606d64e,T0_list,success,ok,36,200,nojs
+2026-11-18T14:12:30Z,P2,r_57d98ffd,T3_add,validation_error,min_length,18,303,nojs
+2026-11-18T14:12:31Z,P2,r_1fca0724,T0_list,success,ok,16,200,nojs
+2026-11-18T14:12:47Z,P2,r_ea42b758,T3_add,success,ok,45,303,nojs
+2026-11-18T14:12:48Z,P2,r_b94d96d5,T0_list,success,ok,18,200,nojs
+</code></pre>
+</div>
+<p>Check three things. The <code>js_mode</code> column contains both <code>htmx</code> and <code>nojs</code>; if every row says <code>nojs</code> with JavaScript on, the HTMX script is not loading, and the footer will have told you so. The rejected title is one <code>validation_error</code> row with <code>min_length</code> in the outcome column and no other row for that request. The <code>session_id</code> column reads <code>DRY1</code> throughout.</p>
+<p>If the file does not exist, nothing has been requested since you deleted it, or the server is running from another directory. If a request is missing, look at the terminal, which prints one line per request; a line there with no row in the file means the handler is not inside <code>timed()</code>, which at this tag means the code has been edited. When the rows are right, delete the file again. The pilots start with an empty log.</p>
+</section>
+<section id="what-to-record" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="what-to-record"><span class="header-section-number">7.6</span> What to record</h2>
+<p>Commit <code>research/plan.md</code> and <code>research/seed-tasks.csv</code>. Do not commit <code>data/metrics.csv</code>; the tag's <code>.gitignore</code> keeps it out, and <a href="08-pilots.html" class="quarto-xref"><span>Chapter 8</span></a> says what to keep once it holds participants' rows. In the plan, write one sentence under each task saying which row in the log will mark it as finished, since the gap from the previous row to that one is the time on task you will compute in <a href="09-analysis-and-prioritisation.html" class="quarto-xref"><span>Chapter 9</span></a>. For a filter in HTMX mode it is the last <code>T1_filter</code> row before the participant answers; for an edit it is the <code>T2_edit</code> row from the save, not the one from opening the form.</p>
+</section>
+<section id="further-reading" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">7.7</span> Further reading</h2>
+<p>Moran's introduction to usability testing covers the shape of a task-based session and the facilitator's role <span class="citation" data-cites="moran2019usability">(<a href="#ref-moran2019usability" role="doc-biblioref">Moran, 2019</a>)</span>. The W3C's report on accessibility metrics surveys what has been measured and how little of it is standard <span class="citation" data-cites="w3c2014metrics">(<a href="#ref-w3c2014metrics" role="doc-biblioref">W3C Web Accessibility Initiative, 2014</a>)</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-moran2019usability" class="csl-entry" role="listitem">
+Moran, K. (2019) <span>“Usability (user) testing 101.”</span> Nielsen Norman Group. Available at: <a href="https://www.nngroup.com/articles/usability-testing-101/">https://www.nngroup.com/articles/usability-testing-101/</a> (Accessed: October 4, 2026).
+</div>
+<div id="ref-w3c2014metrics" class="csl-entry" role="listitem">
+W3C Web Accessibility Initiative (2014) <em>Research report on web accessibility metrics</em>. Edited by M. Vigo, G. Brajnik, and R. Lopes. W3C Working Group Note. World Wide Web Consortium. Available at: <a href="https://www.w3.org/TR/accessibility-metrics-report/">https://www.w3.org/TR/accessibility-metrics-report/</a> (Accessed: October 4, 2026).
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/06-parity-and-validation.html" class="pagination-link" aria-label="Parity and validation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Parity and validation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/08-pilots.html" class="pagination-link" aria-label="Pilots">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Pilots</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

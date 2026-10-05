@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.5">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Server-first – Server-First HCI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/02-needs-finding-and-consent.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0435b4823c1a87252ebb8840a3236ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-c723a02369364f0a3f545b12e13627fe.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f0435b4823c1a87252ebb8840a3236ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-1b6a09301176eca14911d74d35d4c872.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-37c69bc02de78d2ffd4270d4ad989962.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-1b6a09301176eca14911d74d35d4c872.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-server-first.html">Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/01-server-first.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Server-first</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Server-First HCI</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Foundations</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-server-first.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Server-first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-needs-finding-and-consent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Needs-finding and consent</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Building inclusively</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-inline-edit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inline edit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-auditing-and-fixing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Auditing and fixing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-partials-and-pagination.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Partials and pagination</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-parity-and-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Parity and validation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Evaluating</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-instrumentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Instrumentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-pilots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Pilots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-analysis-and-prioritisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Analysis and prioritisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-redesign-and-verification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Redesign and verification</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Communicating</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-crit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Crit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-portfolio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Portfolio</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">The module</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../module/schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Schedule</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../module/assessment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Assessment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../module/institution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Institution</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Appendices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/kotlin-primer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Enough Kotlin to read this book</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-pebble.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Pebble</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-htmx-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">HTMX patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-accessibility-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Accessibility testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-privacy-and-consent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Privacy and consent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-participant-information-sheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Participant information sheet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/g-consent-form.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Consent form</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/h-evaluation-metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Evaluation metrics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/i-screenshot-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Screenshot evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/j-glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/k-learning-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">Learning outcomes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-the-server-renders-the-page" id="toc-why-the-server-renders-the-page" class="nav-link active" data-scroll-target="#why-the-server-renders-the-page"><span class="header-section-number">1.1</span> Why the server renders the page</a></li>
+  <li><a href="#activity-1-run-it-and-follow-a-request" id="toc-activity-1-run-it-and-follow-a-request" class="nav-link" data-scroll-target="#activity-1-run-it-and-follow-a-request"><span class="header-section-number">1.2</span> Activity 1: run it and follow a request</a></li>
+  <li><a href="#activity-2-the-add-flow-in-both-modes" id="toc-activity-2-the-add-flow-in-both-modes" class="nav-link" data-scroll-target="#activity-2-the-add-flow-in-both-modes"><span class="header-section-number">1.3</span> Activity 2: the add flow in both modes</a></li>
+  <li><a href="#activity-3-implement-delete-in-both-modes" id="toc-activity-3-implement-delete-in-both-modes" class="nav-link" data-scroll-target="#activity-3-implement-delete-in-both-modes"><span class="header-section-number">1.4</span> Activity 3: implement delete in both modes</a></li>
+  <li><a href="#what-to-record" id="toc-what-to-record" class="nav-link" data-scroll-target="#what-to-record"><span class="header-section-number">1.5</span> What to record</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">1.6</span> Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<div class="preview-banner" role="note" aria-label="Pre-print notice">
+  <p><strong>Pre-print preview.</strong> A draft of <em>Server-First HCI</em> published for review. Every chapter is drafted; none is final. Corrections are welcome, and the preface says how the book is made.</p>
+</div>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-server-first.html">Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/01-server-first.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Server-first</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-server-first" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Server-first</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>You clone a working task list, read how a request becomes a page, and fill the one gap left in it; by the end the list adds and deletes tasks with JavaScript off, and the same page works enhanced with HTMX.</p>
+<!-- Budget: 1,500 words of prose. Source material: src/wk06/wk6-lab1-html-css-htmx.md, src/references/server-first.md. Code: include from server-first-hci-kotlin tag week-06-start; week-06 is named as the comparison once the gap is filled. The tag builds green with the two delete tests disabled (tools/check-includes.py checks every path and line range below). -->
+<p>Before you start, work through <a href="../appendices/a-setup.html" class="quarto-xref"><span>Appendix A</span></a> until <code>./gradlew build</code> passes on your machine, then check out the tag this chapter is written against: <code>git checkout week-06-start</code>. If you have not written Kotlin before, read <a href="../appendices/kotlin-primer.html" class="quarto-xref"><span>Appendix B</span></a>; this chapter assumes you can read a function and a map literal and nothing more. You have met HTML and CSS once, which is enough.</p>
+<section id="why-the-server-renders-the-page" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="why-the-server-renders-the-page"><span class="header-section-number">1.1</span> Why the server renders the page</h2>
+<p>The application in this book sends the browser finished HTML. The browser shows it without running a script, and every link and form on it works with JavaScript off. HTMX is then added as a layer on top: a small script that lets a form or link fetch a fragment of HTML and swap it into the page instead of reloading. If the script fails to load, is blocked, or is switched off, the page is still the page.</p>
+<p>This is progressive enhancement, and the GOV.UK service manual requires it for government services <span class="citation" data-cites="govuk_progressive_enhancement">(<a href="#ref-govuk_progressive_enhancement" role="doc-biblioref">Government Digital Service, no date</a>)</span>. <em>Hypermedia Systems</em> makes the longer argument for building this way <span class="citation" data-cites="gross2023hypermedia">(<a href="#ref-gross2023hypermedia" role="doc-biblioref">Gross, Stepinski and Akşimşek, 2023</a>)</span>. The reason this book takes the position is narrower: the HTML the server sends is the HTML a screen reader reads, so there is one place to get the structure, the labels and the announcements right, and one place to check them.</p>
+<p>Every interaction in the task list is therefore reached two ways: a plain form submission that ends in a redirect, and an HTMX request that ends in a fragment. The server tells them apart by one request header, and every handler answers both.</p>
+</section>
+<section id="activity-1-run-it-and-follow-a-request" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="activity-1-run-it-and-follow-a-request"><span class="header-section-number">1.2</span> Activity 1: run it and follow a request</h2>
+<p>Run <code>./gradlew run</code> and open <code>http://localhost:8080/tasks</code>. If the page is blank, a server from last time is still on the port; stop it with Ctrl-C in that terminal and run again. Add a task and watch the terminal print one line per request: method, path, status.</p>
+<p>Four files turn that request into the page. <code>Main.kt</code> starts the server and installs everything.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/Main.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="src/main/kotlin/Main.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">ContentType</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpStatusCode</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">application</span><span class="op">.</span><span class="im">Application</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">application</span><span class="op">.</span><span class="im">install</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">engine</span><span class="op">.</span><span class="im">embeddedServer</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">content</span><span class="op">.</span><span class="im">staticResources</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">netty</span><span class="op">.</span><span class="im">Netty</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">plugins</span><span class="op">.</span><span class="im">calllogging</span><span class="op">.</span><span class="im">CallLogging</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">plugins</span><span class="op">.</span><span class="im">statuspages</span><span class="op">.</span><span class="im">StatusPages</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">request</span><span class="op">.</span><span class="im">httpMethod</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">request</span><span class="op">.</span><span class="im">path</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">response</span><span class="op">.</span><span class="im">respondText</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">routing</span><span class="op">.</span><span class="im">routing</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">routes</span><span class="op">.</span><span class="im">configureHealthCheck</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">routes</span><span class="op">.</span><span class="im">configureTaskRoutes</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">storage</span><span class="op">.</span><span class="im">TaskStore</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">/** Starts the server. The port comes from the PORT environment variable and defaults to 8080. */</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">main</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">port</span> <span class="op">=</span> System<span class="op">.</span>getenv<span class="op">(</span><span class="st">"PORT"</span><span class="op">)?.</span>toIntOrNull<span class="op">()</span> <span class="op">?:</span> <span class="dv">8080</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    embeddedServer<span class="op">(</span>Netty<span class="op">,</span> port <span class="op">=</span> port<span class="op">,</span> host <span class="op">=</span> <span class="st">"0.0.0.0"</span><span class="op">)</span> <span class="op">{</span> module<span class="op">()</span> <span class="op">}.</span>start<span class="op">(</span>wait <span class="op">=</span> <span class="kw">true</span><span class="op">)</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"> * Installs every plugin and route. The tests call this with their own [TaskStore],</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"> * so the application under test is the one that runs.</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">Application</span><span class="op">.</span><span class="fu">module</span><span class="op">(</span><span class="va">store</span><span class="op">:</span> <span class="dt">TaskStore</span> <span class="op">=</span> TaskStore<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    configureLogging<span class="op">()</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    configureTemplating<span class="op">()</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    configureStatusPages<span class="op">()</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    routing <span class="op">{</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        staticResources<span class="op">(</span><span class="st">"/static"</span><span class="op">,</span> <span class="st">"static"</span><span class="op">)</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        configureHealthCheck<span class="op">()</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        configureTaskRoutes<span class="op">(</span>store<span class="op">)</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">/** One console line per request: method, path and status. */</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">Application</span><span class="op">.</span><span class="fu">configureLogging</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    install<span class="op">(</span>CallLogging<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        format <span class="op">{</span> call <span class="op">-&gt;</span> <span class="st">"</span><span class="ss">${</span>call<span class="op">.</span>request<span class="op">.</span>httpMethod<span class="op">.</span>value<span class="ss">}</span><span class="st"> </span><span class="ss">${</span>call<span class="op">.</span>request<span class="op">.</span>path<span class="op">()</span><span class="ss">}</span><span class="st"> - </span><span class="ss">${</span>call<span class="op">.</span>response<span class="op">.</span>status<span class="op">()</span><span class="ss">}</span><span class="st">"</span> <span class="op">}</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">/** Renders errors/404.peb for any response that ends as a 404 with no body of its own. */</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">Application</span><span class="op">.</span><span class="fu">configureStatusPages</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    install<span class="op">(</span>StatusPages<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        status<span class="op">(</span>HttpStatusCode<span class="op">.</span>NotFound<span class="op">)</span> <span class="op">{</span> call<span class="op">,</span> status <span class="op">-&gt;</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>            call<span class="op">.</span>respondText<span class="op">(</span>call<span class="op">.</span>renderTemplate<span class="op">(</span><span class="st">"errors/404.peb"</span><span class="op">),</span> ContentType<span class="op">.</span>Text<span class="op">.</span>Html<span class="op">,</span> status<span class="op">)</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>main</code> reads the port and starts Netty with <code>module()</code>. <code>module</code> installs request logging, the template engine, a handler that renders the 404 page, and the routes. The tests call <code>module</code> with their own <code>TaskStore</code>, so the application under test is the one that runs.</p>
+<p><code>Templating.kt</code> builds the Pebble engine and holds the two functions every route uses.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/Templating.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="src/main/kotlin/Templating.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">application</span><span class="op">.</span><span class="im">Application</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">application</span><span class="op">.</span><span class="im">ApplicationCall</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">AttributeKey</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">pebbletemplates</span><span class="op">.</span><span class="im">pebble</span><span class="op">.</span><span class="im">PebbleEngine</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">pebbletemplates</span><span class="op">.</span><span class="im">pebble</span><span class="op">.</span><span class="im">loader</span><span class="op">.</span><span class="im">ClasspathLoader</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">StringWriter</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="va">PebbleEngineKey</span> <span class="op">=</span> AttributeKey<span class="op">&lt;</span>PebbleEngine<span class="op">&gt;(</span><span class="st">"PebbleEngine"</span><span class="op">)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">/** Builds the engine the application uses. The template smoke test uses the same one. */</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">buildPebbleEngine</span><span class="op">():</span> <span class="dt">PebbleEngine</span> <span class="op">=</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    PebbleEngine<span class="op">.</span>Builder<span class="op">()</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>loader<span class="op">(</span>ClasspathLoader<span class="op">().</span>apply <span class="op">{</span> prefix <span class="op">=</span> <span class="st">"templates/"</span> <span class="op">})</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Every {{ value }} is HTML-escaped. This is what makes rendering through templates safe.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>autoEscaping<span class="op">(</span><span class="kw">true</span><span class="op">)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Templates are re-read on every request, so edits show without a restart.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>cacheActive<span class="op">(</span><span class="kw">false</span><span class="op">)</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>strictVariables<span class="op">(</span><span class="kw">false</span><span class="op">)</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>build<span class="op">()</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">Application</span><span class="op">.</span><span class="fu">configureTemplating</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    attributes<span class="op">.</span>put<span class="op">(</span>PebbleEngineKey<span class="op">,</span> buildPebbleEngine<span class="op">())</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"> * Renders a template under resources/templates with [context], adding `isHtmx` so the</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"> * layout can use it without every route passing it.</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">renderTemplate</span><span class="op">(</span><span class="va">name</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">context</span><span class="op">:</span> <span class="dt">Map</span>&lt;<span class="va">String</span><span class="op">,</span> <span class="va">Any</span>?&gt; <span class="op">=</span> emptyMap<span class="op">()):</span> <span class="dt">String</span> <span class="op">{</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">engine</span> <span class="op">=</span> application<span class="op">.</span>attributes<span class="op">[</span>PebbleEngineKey<span class="op">]</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">enriched</span> <span class="op">=</span> context <span class="op">+</span> mapOf<span class="op">(</span><span class="st">"isHtmx"</span> to isHtmxRequest<span class="op">())</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> StringWriter<span class="op">().</span>also <span class="op">{</span> engine<span class="op">.</span>getTemplate<span class="op">(</span>name<span class="op">).</span>evaluate<span class="op">(</span>it<span class="op">,</span> enriched<span class="op">)</span> <span class="op">}.</span>toString<span class="op">()</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"> * True when HTMX made the request and wants a fragment back. HTMX also sends HX-Request</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"> * when it restores a page from history, but then it expects the full page, so that case</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"> * returns false.</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">isHtmxRequest</span><span class="op">():</span> <span class="dt">Boolean</span> <span class="op">=</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    request<span class="op">.</span>headers<span class="op">[</span><span class="st">"HX-Request"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"true"</span> <span class="op">&amp;&amp;</span> request<span class="op">.</span>headers<span class="op">[</span><span class="st">"HX-History-Restore-Request"</span><span class="op">]</span> <span class="op">!=</span> <span class="st">"true"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Three settings matter. <code>autoEscaping(true)</code> means every <code>{ value }</code> in a template is HTML-escaped. <code>cacheActive(false)</code> means a template edit shows on the next request without a restart. <code>isHtmxRequest()</code> is the header check: HTMX sends <code>HX-Request: true</code> on every request it makes, so a route that sees it returns a fragment. HTMX also sends that header when it restores a page from history, and then it wants the whole page back, so that case returns false.</p>
+<p>The layout every page extends is <code>_layout/base.peb</code>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/resources/templates/_layout/base.peb</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="src/main/resources/templates/_layout/base.peb"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"en"</span><span class="dt">&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">"utf-8"</span><span class="dt">&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> name</span><span class="op">=</span><span class="st">"viewport"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"width=device-width, initial-scale=1"</span><span class="dt">&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>{% block title %}Tasks{% endblock %}<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  {# Both files are served by this application, not from a CDN, because lab networks block CDNs. #}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/static/css/pico.min.css"</span><span class="dt">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/static/css/app.css"</span><span class="dt">&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"/static/js/htmx.min.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  {% include "_layout/_header.peb" %}</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">main</span><span class="ot"> id</span><span class="op">=</span><span class="st">"main"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"container"</span><span class="ot"> tabindex</span><span class="op">=</span><span class="st">"-1"</span><span class="dt">&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    {# The one live region on the page. Fragments update its content out of band through tasks/_status.peb. #}</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"status"</span><span class="ot"> role</span><span class="op">=</span><span class="st">"status"</span><span class="ot"> aria-live</span><span class="op">=</span><span class="st">"polite"</span><span class="ot"> aria-atomic</span><span class="op">=</span><span class="st">"true"</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    {% block content %}{% endblock %}</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  {% include "_layout/_footer.peb" %}</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The stylesheet and the HTMX script are served by this application rather than a CDN, because lab networks block CDNs. The <code>&lt;div id="status"&gt;</code> is the one live region on the page: an element with <code>role="status"</code> that a screen reader announces when its content changes. It is empty on load, which is correct for a region that announces later changes. <code>{% block content %}</code> is where a page puts its body.</p>
+<p><code>tasks/index.peb</code> is that page for the list.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/resources/templates/tasks/index.peb</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="src/main/resources/templates/tasks/index.peb"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>{% extends "_layout/base.peb" %}</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>{% block title %}Tasks{% endblock %}</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>{% block content %}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Tasks<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>{% include "tasks/_add_form.peb" %}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="ot"> aria-labelledby</span><span class="op">=</span><span class="st">"list-heading"</span><span class="dt">&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h2</span><span class="ot"> id</span><span class="op">=</span><span class="st">"list-heading"</span><span class="dt">&gt;</span>Your tasks<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">ul</span><span class="ot"> id</span><span class="op">=</span><span class="st">"task-list"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"task-list"</span><span class="dt">&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    {% for task in tasks %}</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      {% include "tasks/_item.peb" with {"task": task} %}</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    {% endfor %}</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>It extends the layout, includes the add form, and includes <code>_item.peb</code> once per task. The syntax is in <a href="../appendices/b-pebble.html" class="quarto-xref"><span>Appendix C</span></a>.</p>
+</section>
+<section id="activity-2-the-add-flow-in-both-modes" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="activity-2-the-add-flow-in-both-modes"><span class="header-section-number">1.3</span> Activity 2: the add flow in both modes</h2>
+<p>The add form is its own template because the server sends it back after every submission.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/resources/templates/tasks/_add_form.peb</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="src/main/resources/templates/tasks/_add_form.peb"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>{# Re-rendered out of band after every POST /tasks, so the form shows the result:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   empty after success, the typed title and the error after a failed validation. #}</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="ot"> id</span><span class="op">=</span><span class="st">"add-section"</span><span class="ot"> aria-labelledby</span><span class="op">=</span><span class="st">"add-heading"</span><span class="er">{%</span><span class="ot"> if oob </span><span class="er">%}</span><span class="ot"> hx-swap-oob</span><span class="op">=</span><span class="st">"true"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h2</span><span class="ot"> id</span><span class="op">=</span><span class="st">"add-heading"</span><span class="dt">&gt;</span>Add a task<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/tasks"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="ot"> hx-post</span><span class="op">=</span><span class="st">"/tasks"</span><span class="ot"> hx-target</span><span class="op">=</span><span class="st">"#task-list"</span><span class="ot"> hx-swap</span><span class="op">=</span><span class="st">"afterbegin"</span><span class="dt">&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"task-title"</span><span class="dt">&gt;</span>Title<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> id</span><span class="op">=</span><span class="st">"task-title"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"title"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"{{ addTitle }}"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ot">           aria-describedby</span><span class="op">=</span><span class="st">"title-hint{% if addError %} add-error{% endif %}"</span><span class="er">{%</span><span class="ot"> if addError </span><span class="er">%}</span><span class="ot"> aria-invalid</span><span class="op">=</span><span class="st">"true"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">small</span><span class="ot"> id</span><span class="op">=</span><span class="st">"title-hint"</span><span class="dt">&gt;</span>Between {{ minTitleLength }} and {{ maxTitleLength }} characters.<span class="dt">&lt;/</span><span class="kw">small</span><span class="dt">&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    {% if addError %}<span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> id</span><span class="op">=</span><span class="st">"add-error"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"error-message"</span><span class="ot"> role</span><span class="op">=</span><span class="st">"alert"</span><span class="dt">&gt;</span>{{ addError }}<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span>{% endif %}</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> id</span><span class="op">=</span><span class="st">"add-button"</span><span class="dt">&gt;</span>Add task<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>&lt;form&gt;</code> carries two sets of attributes. <code>action</code> and <code>method</code> are what a browser uses; <code>hx-post</code>, <code>hx-target</code> and <code>hx-swap</code> are what HTMX uses when its script is running. The label is tied to the field by <code>for</code>, the hint by <code>aria-describedby</code>, and after a failed submission the field is marked <code>aria-invalid</code> and the error paragraph is added to its description.</p>
+<p><code>TaskRoutes.kt</code> holds every route in the application at this tag.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/kotlin/routes/TaskRoutes.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="src/main/kotlin/routes/TaskRoutes.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> <span class="im">routes</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">ContentType</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpHeaders</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpStatusCode</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">encodeURLParameter</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">application</span><span class="op">.</span><span class="im">ApplicationCall</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">request</span><span class="op">.</span><span class="im">receiveParameters</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">response</span><span class="op">.</span><span class="im">respond</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">response</span><span class="op">.</span><span class="im">respondText</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">routing</span><span class="op">.</span><span class="im">Route</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">routing</span><span class="op">.</span><span class="im">get</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">io</span><span class="op">.</span><span class="im">ktor</span><span class="op">.</span><span class="im">server</span><span class="op">.</span><span class="im">routing</span><span class="op">.</span><span class="im">post</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">isHtmxRequest</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">model</span><span class="op">.</span><span class="im">Task</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">model</span><span class="op">.</span><span class="im">ValidationResult</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">renderTemplate</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">storage</span><span class="op">.</span><span class="im">TaskStore</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"> * Every route answers in two modes. With the HX-Request header it returns the fragment</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"> * HTMX asked for, plus any out-of-band updates. Without it, it returns a full page or</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"> * redirects (POST, redirect, GET), so the same URLs work with JavaScript off.</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="kw">fun</span> <span class="fu">Route</span><span class="op">.</span><span class="fu">configureTaskRoutes</span><span class="op">(</span><span class="va">store</span><span class="op">:</span> <span class="dt">TaskStore</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">get</span><span class="op">(</span><span class="st">"/"</span><span class="op">)</span> <span class="op">{</span> call<span class="op">.</span>seeOther<span class="op">(</span><span class="st">"/tasks"</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">get</span><span class="op">(</span><span class="st">"/tasks"</span><span class="op">)</span> <span class="op">{</span> call<span class="op">.</span>listTasks<span class="op">(</span>store<span class="op">)</span> <span class="op">}</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    post<span class="op">(</span><span class="st">"/tasks"</span><span class="op">)</span> <span class="op">{</span> call<span class="op">.</span>addTask<span class="op">(</span>store<span class="op">)</span> <span class="op">}</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">// </span><span class="al">TODO</span><span class="co"> Week 6 Lab 1: add delete. HTMX sends DELETE /tasks/{id}; a form without JavaScript</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// can only POST, so it needs POST /tasks/{id}/delete as well. Both call one handler.</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">/** The list page. After a failed submission the query string carries `error` and `title` so the form can show them. */</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> suspend <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">listTasks</span><span class="op">(</span><span class="va">store</span><span class="op">:</span> <span class="dt">TaskStore</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">error</span> <span class="op">=</span> request<span class="op">.</span>queryParameters<span class="op">[</span><span class="st">"error"</span><span class="op">]?.</span>let<span class="op">(</span>Task<span class="op">::</span>messageFor<span class="op">)</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">title</span> <span class="op">=</span> request<span class="op">.</span>queryParameters<span class="op">[</span><span class="st">"title"</span><span class="op">]</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    respondHtml<span class="op">(</span>renderTemplate<span class="op">(</span><span class="st">"tasks/index.peb"</span><span class="op">,</span> listContext<span class="op">(</span>store<span class="op">)</span> <span class="op">+</span> mapOf<span class="op">(</span><span class="st">"addError"</span> to error<span class="op">,</span> <span class="st">"addTitle"</span> to title<span class="op">)))</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> suspend <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">addTask</span><span class="op">(</span><span class="va">store</span><span class="op">:</span> <span class="dt">TaskStore</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">title</span> <span class="op">=</span> receiveParameters<span class="op">()[</span><span class="st">"title"</span><span class="op">]?.</span>trim<span class="op">().</span>orEmpty<span class="op">()</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">when</span> <span class="op">(</span><span class="kw">val</span> <span class="va">result</span> <span class="op">=</span> Task<span class="op">.</span>validate<span class="op">(</span>title<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        <span class="kw">is</span> ValidationResult<span class="op">.</span>Error <span class="op">-&gt;</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>isHtmxRequest<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>                <span class="co">// Nothing for the list. The form comes back out of band with the error, and the live region announces it.</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>                respondHtml<span class="op">(</span>renderAddForm<span class="op">(</span>title<span class="op">,</span> result<span class="op">.</span>message<span class="op">)</span> <span class="op">+</span> renderStatus<span class="op">(</span>result<span class="op">.</span>message<span class="op">,</span> isError <span class="op">=</span> <span class="kw">true</span><span class="op">))</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>                seeOther<span class="op">(</span>tasksPath<span class="op">(</span>error <span class="op">=</span> result<span class="op">.</span>code<span class="op">,</span> title <span class="op">=</span> title<span class="op">))</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        ValidationResult<span class="op">.</span>Success <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">task</span> <span class="op">=</span> Task<span class="op">(</span>title <span class="op">=</span> title<span class="op">)</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>            store<span class="op">.</span>add<span class="op">(</span>task<span class="op">)</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>isHtmxRequest<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>                respondHtml<span class="op">(</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>                    renderTemplate<span class="op">(</span><span class="st">"tasks/_item.peb"</span><span class="op">,</span> itemContext<span class="op">(</span>task<span class="op">))</span> <span class="op">+</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>                        renderAddForm<span class="op">()</span> <span class="op">+</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>                        renderStatus<span class="op">(</span><span class="st">"Added </span><span class="sc">\"</span><span class="ss">${</span>task<span class="op">.</span>title<span class="ss">}</span><span class="sc">\"</span><span class="st">."</span><span class="op">),</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>                <span class="op">)</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>                seeOther<span class="op">(</span>tasksPath<span class="op">())</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">val</span> <span class="va">TITLE_LIMITS</span> <span class="op">=</span> mapOf<span class="op">(</span><span class="st">"minTitleLength"</span> to Task<span class="op">.</span>MIN_TITLE_LENGTH<span class="op">,</span> <span class="st">"maxTitleLength"</span> to Task<span class="op">.</span>MAX_TITLE_LENGTH<span class="op">)</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="co">/** Every task, newest first. */</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">listContext</span><span class="op">(</span><span class="va">store</span><span class="op">:</span> <span class="dt">TaskStore</span><span class="op">):</span> <span class="dt">Map</span><span class="op">&lt;</span><span class="dt">String</span>, <span class="dt">Any</span><span class="op">?&gt;</span> <span class="op">=</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>    TITLE_LIMITS <span class="op">+</span> mapOf<span class="op">(</span><span class="st">"tasks"</span> to store<span class="op">.</span>getAll<span class="op">().</span>asReversed<span class="op">().</span>map <span class="op">{</span> it<span class="op">.</span>toPebbleContext<span class="op">()</span> <span class="op">})</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="co">/** Builds /tasks with only the query parameters that carry information. */</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">tasksPath</span><span class="op">(</span><span class="va">error</span><span class="op">:</span> <span class="dt">String</span><span class="op">?</span> <span class="op">=</span> null<span class="op">,</span> <span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">?</span> <span class="op">=</span> null<span class="op">):</span> <span class="dt">String</span> <span class="op">{</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> <span class="va">params</span> <span class="op">=</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>        buildList <span class="op">{</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>error <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> add<span class="op">(</span><span class="st">"error=</span><span class="ss">${</span>error<span class="op">.</span>encodeURLParameter<span class="op">()</span><span class="ss">}</span><span class="st">"</span><span class="op">)</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>title <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> add<span class="op">(</span><span class="st">"title=</span><span class="ss">${</span>title<span class="op">.</span>encodeURLParameter<span class="op">()</span><span class="ss">}</span><span class="st">"</span><span class="op">)</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="cf">if</span> <span class="op">(</span>params<span class="op">.</span>isEmpty<span class="op">())</span> <span class="st">"/tasks"</span> <span class="cf">else</span> <span class="st">"/tasks?"</span> <span class="op">+</span> params<span class="op">.</span>joinToString<span class="op">(</span><span class="st">"&amp;"</span><span class="op">)</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">itemContext</span><span class="op">(</span><span class="va">task</span><span class="op">:</span> <span class="dt">Task</span><span class="op">):</span> <span class="dt">Map</span><span class="op">&lt;</span><span class="dt">String</span>, <span class="dt">Any</span><span class="op">?&gt;</span> <span class="op">=</span> mapOf<span class="op">(</span><span class="st">"task"</span> to task<span class="op">.</span>toPebbleContext<span class="op">())</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">renderAddForm</span><span class="op">(</span><span class="va">title</span><span class="op">:</span> <span class="dt">String</span><span class="op">?</span> <span class="op">=</span> null<span class="op">,</span> <span class="va">error</span><span class="op">:</span> <span class="dt">String</span><span class="op">?</span> <span class="op">=</span> null<span class="op">):</span> <span class="dt">String</span> <span class="op">=</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>    renderTemplate<span class="op">(</span><span class="st">"tasks/_add_form.peb"</span><span class="op">,</span> TITLE_LIMITS <span class="op">+</span> mapOf<span class="op">(</span><span class="st">"oob"</span> to <span class="kw">true</span><span class="op">,</span> <span class="st">"addTitle"</span> to title<span class="op">,</span> <span class="st">"addError"</span> to error<span class="op">))</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">/** The out-of-band update for the live region. The message is text; the template does the HTML. */</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">renderStatus</span><span class="op">(</span><span class="va">message</span><span class="op">:</span> <span class="dt">String</span><span class="op">,</span> <span class="va">isError</span><span class="op">:</span> <span class="dt">Boolean</span> <span class="op">=</span> false<span class="op">):</span> <span class="dt">String</span> <span class="op">=</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>    renderTemplate<span class="op">(</span><span class="st">"tasks/_status.peb"</span><span class="op">,</span> mapOf<span class="op">(</span><span class="st">"message"</span> to message<span class="op">,</span> <span class="st">"error"</span> to isError<span class="op">))</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> suspend <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">respondHtml</span><span class="op">(</span><span class="va">html</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span> <span class="op">=</span> respondText<span class="op">(</span>html<span class="op">,</span> ContentType<span class="op">.</span>Text<span class="op">.</span>Html<span class="op">)</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="co">/** 303 See Other: the status for "the POST worked, now GET this", so a refresh never re-submits. */</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> suspend <span class="kw">fun</span> <span class="fu">ApplicationCall</span><span class="op">.</span><span class="fu">seeOther</span><span class="op">(</span><span class="va">path</span><span class="op">:</span> <span class="dt">String</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>    response<span class="op">.</span>headers<span class="op">.</span>append<span class="op">(</span>HttpHeaders<span class="op">.</span>Location<span class="op">,</span> path<span class="op">)</span></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>    respond<span class="op">(</span>HttpStatusCode<span class="op">.</span>SeeOther<span class="op">)</span></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>With JavaScript off, the browser POSTs the form. <code>addTask</code> reads the title, validates it, saves it, and answers <code>303 See Other</code> with <code>Location: /tasks</code>. The browser GETs the list and shows the new task. A refresh now repeats the GET, not the POST, so nothing is submitted twice; this is the POST, redirect, GET pattern, and <code>seeOther</code> is the only place the status code appears. A failed validation also redirects, to <code>/tasks?error=min_length&amp;title=ab</code>: the URL carries the error code and the typed text, and <code>listTasks</code> turns the code back into a message with <code>Task.messageFor</code>. An unknown code renders nothing, so a crafted URL cannot put text on the page.</p>
+<p>With HTMX, the same POST arrives with <code>HX-Request: true</code>, and the response is three fragments in one body. The first is <code>_item.peb</code>, which HTMX inserts at the start of <code>#task-list</code> as the form's <code>hx-target</code> and <code>hx-swap</code> say. The second is <code>_add_form.peb</code> rendered with <code>oob</code> set, so it carries <code>hx-swap-oob="true"</code>; HTMX takes it out of the response and replaces <code>#add-section</code> with it wherever that is, empty after a success and holding the typed title and the error after a failure. The third is <code>_status.peb</code>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/resources/templates/tasks/_status.peb</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="src/main/resources/templates/tasks/_status.peb"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>{# Swapped into the live region in the layout. innerHTML keeps the region itself in place,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   which is what makes screen readers announce the change. #}</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> hx-swap-oob</span><span class="op">=</span><span class="st">"innerHTML:#status"</span><span class="dt">&gt;</span>{% if message %}<span class="dt">&lt;</span><span class="kw">span</span><span class="er">{%</span><span class="ot"> if error </span><span class="er">%}</span><span class="ot"> class</span><span class="op">=</span><span class="st">"error"</span><span class="er">{%</span><span class="ot"> endif </span><span class="er">%}</span><span class="dt">&gt;</span>{{ message }}<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span>{% endif %}<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>hx-swap-oob="innerHTML:#status"</code> puts the fragment's content inside the live region and leaves the region itself in place. Screen readers announce changes to a live region that already exists; a region inserted into the page with its message already inside is often not announced. The 2025 version of this code replaced the whole element. That the region stays in place has been checked by reading the HTMX source and by driving a browser against every tag: <code>#status</code> is the same DOM node before and after each swap. That the change is announced has not yet been checked with a screen reader on a lab machine; Activity 3 is where you find out.</p>
+<p>Every fragment, including the one-line status, is a template, and <code>renderStatus</code> passes the message as text. Nothing in <code>TaskRoutes.kt</code> builds HTML with a title in it. That is what makes a title of <code>&lt;b&gt;bold&lt;/b&gt; &amp; "quoted"</code> arrive on the page as text; the test <code>titles are escaped everywhere they appear</code> posts exactly that and checks the output.</p>
+<p>When one URL answers differently depending on a header, the response has to say so with <code>Vary: HX-Request</code>, or a cache can hand a fragment to a browser that asked for a page. At this tag no GET route varies, so none sends the header; <a href="05-partials-and-pagination.html" class="quarto-xref"><span>Chapter 5</span></a> adds it when <code>GET /tasks</code> starts answering both ways.</p>
+<p>Check the two modes from a second terminal while the server runs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> <span class="at">-d</span> <span class="st">'title=Buy milk'</span> http://localhost:8080/tasks</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> <span class="at">-H</span> <span class="st">'HX-Request: true'</span> <span class="at">-d</span> <span class="st">'title=Buy milk'</span> http://localhost:8080/tasks</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-i</span> <span class="at">-d</span> <span class="st">'title=ab'</span> http://localhost:8080/tasks</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The first prints <code>HTTP/1.1 303 See Other</code> and <code>Location: /tasks</code>. The second prints <code>200 OK</code> and a body that begins with a <code>&lt;li&gt;</code>, continues with the <code>&lt;section id="add-section" ... hx-swap-oob="true"&gt;</code>, and ends with the <code>&lt;div hx-swap-oob="innerHTML:#status"&gt;</code>. The third prints a 303 whose <code>Location</code> is <code>/tasks?error=min_length&amp;title=ab</code>. The Network tab in the browser shows the same two shapes: the header and the fragments with the script running, the redirect and a second request without it. If the browser warns about resubmitting a form when you refresh after adding, a POST returned a page instead of a redirect.</p>
+<p>The item template is where the gap is.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/main/resources/templates/tasks/_item.peb</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="src/main/resources/templates/tasks/_item.peb"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">li</span><span class="ot"> id</span><span class="op">=</span><span class="st">"task-{{ task.id }}"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"task"</span><span class="dt">&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">span</span><span class="ot"> class</span><span class="op">=</span><span class="st">"task-title"</span><span class="ot"> id</span><span class="op">=</span><span class="st">"task-title-{{ task.id }}"</span><span class="dt">&gt;</span>{{ task.title }}<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  {# TODO Week 6 Lab 1: add a Delete button here that works in both modes. The form needs a</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     plain action and method for a browser without JavaScript, and hx-delete, hx-target and</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>     hx-swap for HTMX. tasks/_add_form.peb shows the two-mode pattern, and TaskRoutes.kt</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>     marks where the two delete routes go. #}</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="activity-3-implement-delete-in-both-modes" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="activity-3-implement-delete-in-both-modes"><span class="header-section-number">1.4</span> Activity 3: implement delete in both modes</h2>
+<p>Two tests at the end of <code>TaskRoutesTest.kt</code> describe the behaviour and are switched off until it exists.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>src/test/kotlin/routes/TaskRoutesTest.kt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="src/test/kotlin/routes/TaskRoutesTest.kt"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Delete (Week 6 Lab 1). These two tests describe the behaviour to build; enable them when it exists.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Test</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Disabled</span><span class="op">(</span><span class="st">"Week 6 Lab 1: implement delete in both modes, then remove this annotation"</span><span class="op">)</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> `<span class="fu">DELETE</span> <span class="kw">as</span> <span class="fu">HTMX</span> <span class="fu">removes</span> <span class="fu">the</span> <span class="fu">task</span> <span class="fu">and</span> <span class="fu">returns</span> <span class="fu">only</span> <span class="fu">the</span> <span class="fu">status</span>`<span class="op">()</span> <span class="op">=</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        withApp <span class="op">{</span> store<span class="op">,</span> client <span class="op">-&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">task</span> <span class="op">=</span> Task<span class="op">(</span>title <span class="op">=</span> <span class="st">"Remove me"</span><span class="op">).</span>also<span class="op">(</span>store<span class="op">::</span>add<span class="op">)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">response</span> <span class="op">=</span> client<span class="op">.</span>delete<span class="op">(</span><span class="st">"/tasks/</span><span class="ss">${</span>task<span class="op">.</span>id<span class="ss">}</span><span class="st">"</span><span class="op">)</span> <span class="op">{</span> header<span class="op">(</span>HTMX_HEADER<span class="op">,</span> <span class="st">"true"</span><span class="op">)</span> <span class="op">}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            assertEquals<span class="op">(</span>HttpStatusCode<span class="op">.</span>OK<span class="op">,</span> response<span class="op">.</span>status<span class="op">)</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">body</span> <span class="op">=</span> response<span class="op">.</span>bodyAsText<span class="op">()</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>            assertFalse<span class="op">(</span>body<span class="op">.</span>contains<span class="op">(</span><span class="st">"&lt;li"</span><span class="op">))</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            assertContains<span class="op">(</span>body<span class="op">,</span> <span class="st">"Deleted &amp;quot;Remove me&amp;quot;."</span><span class="op">)</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            assertNull<span class="op">(</span>store<span class="op">.</span>getById<span class="op">(</span>task<span class="op">.</span>id<span class="op">))</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Test</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Disabled</span><span class="op">(</span><span class="st">"Week 6 Lab 1: implement delete in both modes, then remove this annotation"</span><span class="op">)</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fun</span> `<span class="fu">POST</span> <span class="fu">delete</span> <span class="fu">without</span> <span class="fu">HTMX</span> <span class="fu">removes</span> <span class="fu">the</span> <span class="fu">task</span> <span class="fu">and</span> <span class="fu">redirects</span>`<span class="op">()</span> <span class="op">=</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        withApp <span class="op">{</span> store<span class="op">,</span> client <span class="op">-&gt;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">task</span> <span class="op">=</span> Task<span class="op">(</span>title <span class="op">=</span> <span class="st">"Remove me"</span><span class="op">).</span>also<span class="op">(</span>store<span class="op">::</span>add<span class="op">)</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>            <span class="kw">val</span> <span class="va">response</span> <span class="op">=</span> client<span class="op">.</span>postForm<span class="op">(</span><span class="st">"/tasks/</span><span class="ss">${</span>task<span class="op">.</span>id<span class="ss">}</span><span class="st">/delete"</span><span class="op">,</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            assertEquals<span class="op">(</span>HttpStatusCode<span class="op">.</span>SeeOther<span class="op">,</span> response<span class="op">.</span>status<span class="op">)</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>            assertEquals<span class="op">(</span><span class="st">"/tasks"</span><span class="op">,</span> response<span class="op">.</span>headers<span class="op">[</span>HttpHeaders<span class="op">.</span>Location<span class="op">])</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>            assertNull<span class="op">(</span>store<span class="op">.</span>getById<span class="op">(</span>task<span class="op">.</span>id<span class="op">))</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Build it in the order the two <code>TODO</code> comments suggest. In <code>_item.peb</code>, add a form inside the <code>&lt;li&gt;</code> with a Delete button. For the browser it needs <code>action="/tasks/{{ task.id }}/delete"</code> and <code>method="post"</code>, because a form without JavaScript can only GET or POST. For HTMX it needs <code>hx-delete="/tasks/{{ task.id }}"</code>, <code>hx-target="#task-{{ task.id }}"</code> and <code>hx-swap="outerHTML"</code>, so the response replaces the whole <code>&lt;li&gt;</code>. Give the button <code>aria-describedby="task-title-{{ task.id }}"</code> so a screen reader says which task the button deletes.</p>
+<p>In <code>TaskRoutes.kt</code>, add <code>delete("/tasks/{id}")</code> and <code>post("/tasks/{id}/delete")</code> where the comment is, both calling one handler, so the two modes cannot drift apart. If <code>delete</code> is unresolved, add <code>import io.ktor.server.routing.delete</code> beside the imports for <code>get</code> and <code>post</code>. The handler looks the task up with <code>store.getById(parameters["id"].orEmpty())</code> and answers <code>HttpStatusCode.NotFound</code> when there is none; the status page handler in <code>Main.kt</code> turns that into the 404 page. Otherwise it deletes the task and branches on <code>isHtmxRequest()</code>. In HTMX mode it responds with <code>renderStatus</code> and nothing else: there is no content for the target, so the <code>outerHTML</code> swap removes the <code>&lt;li&gt;</code>, and the live region announces the deletion. In the other mode it calls <code>seeOther(tasksPath())</code>.</p>
+<p>Remove the two <code>@Disabled</code> lines and the import that goes with them, then run <code>./gradlew test</code>. If the report says two tests were skipped, the annotations are still there. If the HTMX test fails because the body contains <code>&lt;li</code>, the handler returned the item as well as the status. If the server log shows <code>DELETE /tasks/... - 405 Method Not Allowed</code>, only the POST route exists and HTMX is sending DELETE. In the browser, if the row stays on the page after Delete but is gone after a reload, <code>hx-target</code> names an id that is not on the <code>&lt;li&gt;</code>.</p>
+<p><code>git diff week-06-start week-06</code> shows one implementation. Compare after your tests pass, not before.</p>
+</section>
+<section id="what-to-record" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="what-to-record"><span class="header-section-number">1.5</span> What to record</h2>
+<p>Commit with a message that says what was added. Then write down, in a sentence each, what happened in the two modes when you added a task: with JavaScript off, the page reloaded and said nothing; with HTMX, the status box appeared and, if you had a screen reader running, was read out. That gap is the first row of the backlog you build in <a href="02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a>, and what you heard is its evidence.</p>
+</section>
+<section id="further-reading" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">1.6</span> Further reading</h2>
+<p>Chapters 1 to 3 of <em>Hypermedia Systems</em> set out the argument for sending HTML rather than data <span class="citation" data-cites="gross2023hypermedia">(<a href="#ref-gross2023hypermedia" role="doc-biblioref">Gross, Stepinski and Akşimşek, 2023</a>)</span>. The GOV.UK page on progressive enhancement is short and says why a public service is built this way <span class="citation" data-cites="govuk_progressive_enhancement">(<a href="#ref-govuk_progressive_enhancement" role="doc-biblioref">Government Digital Service, no date</a>)</span>. The HTMX attributes the book uses are collected in <a href="../appendices/c-htmx-patterns.html" class="quarto-xref"><span>Appendix D</span></a>; the reference for all of them is the HTMX documentation <span class="citation" data-cites="htmx_docs">(<a href="#ref-htmx_docs" role="doc-biblioref">Big Sky Software, no date</a>)</span>. MDN explains live regions and how screen readers treat them <span class="citation" data-cites="mdn_live_regions">(<a href="#ref-mdn_live_regions" role="doc-biblioref">MDN contributors, no date</a>)</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-htmx_docs" class="csl-entry" role="listitem">
+Big Sky Software (no date) <span>“Htmx documentation.”</span> Available at: <a href="https://htmx.org/docs/">https://htmx.org/docs/</a> (Accessed: October 4, 2026).
+</div>
+<div id="ref-govuk_progressive_enhancement" class="csl-entry" role="listitem">
+Government Digital Service (no date) <span>“Building a robust frontend using progressive enhancement.”</span> <span>GOV.UK</span> Service Manual. Available at: <a href="https://www.gov.uk/service-manual/technology/using-progressive-enhancement">https://www.gov.uk/service-manual/technology/using-progressive-enhancement</a> (Accessed: October 4, 2026).
+</div>
+<div id="ref-gross2023hypermedia" class="csl-entry" role="listitem">
+Gross, C., Stepinski, A. and Akşimşek, D. (2023) <em>Hypermedia systems</em>. Independently published. Available at: <a href="https://hypermedia.systems/">https://hypermedia.systems/</a> (Accessed: October 4, 2026).
+</div>
+<div id="ref-mdn_live_regions" class="csl-entry" role="listitem">
+MDN contributors (no date) <span>“<span>ARIA</span> live regions.”</span> MDN Web Docs. Available at: <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions">https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions</a> (Accessed: October 4, 2026).
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/02-needs-finding-and-consent.html" class="pagination-link" aria-label="Needs-finding and consent">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Needs-finding and consent</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
