@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix K: Glossary – Server-First HCI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../appendices/k-learning-outcomes.html" rel="next">
+<link href="../appendices/i-screenshot-evidence.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c3d09db4dbb7369cdbe488e38778e838.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-7c2bc0b447041f37e184a3f1a218e2c2.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c3d09db4dbb7369cdbe488e38778e838.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5cca4fafd6b491688a1ff618195ecfff.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-294430641e054b0e13e56b50f8fdf284.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-5cca4fafd6b491688a1ff618195ecfff.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendices/a-setup.html">Appendices</a></li><li class="breadcrumb-item"><a href="../appendices/j-glossary.html"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Server-First HCI</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-server-first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Server-first</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-needs-finding-and-consent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Needs-finding and consent</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Building inclusively</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-inline-edit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inline edit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-auditing-and-fixing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Auditing and fixing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-partials-and-pagination.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Partials and pagination</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-parity-and-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Parity and validation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Evaluating</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-instrumentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Instrumentation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-pilots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Pilots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-analysis-and-prioritisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Analysis and prioritisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-redesign-and-verification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Redesign and verification</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Communicating</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-crit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Crit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-portfolio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Portfolio</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/kotlin-primer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Enough Kotlin to read this book</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-pebble.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Pebble</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-htmx-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">HTMX patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-accessibility-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Accessibility testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-privacy-and-consent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Privacy and consent</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-participant-information-sheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Participant information sheet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/g-consent-form.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Consent form</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/h-evaluation-metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">Evaluation metrics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/i-screenshot-evidence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Screenshot evidence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/j-glossary.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/k-learning-outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">Learning outcomes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<div class="preview-banner" role="note" aria-label="Pre-print notice">
+  <p><strong>Pre-print preview.</strong> A draft of <em>Server-First HCI</em> published for review.</p>
+</div>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendices/a-setup.html">Appendices</a></li><li class="breadcrumb-item"><a href="../appendices/j-glossary.html"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">Glossary</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-glossary" class="quarto-section-identifier">Appendix K: Glossary</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This appendix defines the terms a reader of this book meets, each once, in alphabetical order.</p>
+<!-- Budget: reference page, no fixed budget, one topic. Source material: src/references/glossary.md, cut from 47 entries to the terms used in chapters 1 to 12; the acronym table, the badges and the HTTP, DOM, AJAX, JSON, REST and SSR entries are dropped as 2025 scaffolding. Code: none. -->
+<dl>
+<dt><span id="gloss-severity">Severity</span></dt>
+<dd>
+The backlog's three-value column; its values are in <a href="../chapters/02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a>.
+</dd>
+<dt><span id="gloss-accessibility-tree">Accessibility tree</span></dt>
+<dd>
+The structure a browser builds from the page for assistive technologies: each element's role, name and state. A screen reader reads this, not the pixels, which is why a <code>div</code> styled as a button is not a button.
+</dd>
+<dt><span id="gloss-alt-text">Alt text</span></dt>
+<dd>
+The text an image carries in its <code>alt</code> attribute, read by a screen reader in the image's place. An image that decorates and says nothing has <code>alt=""</code>, so it is skipped.
+</dd>
+<dt><span id="gloss-aria">ARIA</span></dt>
+<dd>
+Accessible Rich Internet Applications: HTML attributes such as <code>role</code>, <code>aria-live</code>, <code>aria-describedby</code> and <code>aria-invalid</code> that add meaning an element does not carry itself. The first rule of ARIA is to use the HTML element that already has the meaning.
+</dd>
+<dt><span id="gloss-aria-describedby"><code>aria-describedby</code></span></dt>
+<dd>
+An attribute linking a control to the element whose text describes it, such as a hint or an error message, so that a screen reader reads the description when the control takes focus.
+</dd>
+<dt><span id="gloss-audit">Audit</span></dt>
+<dd>
+A review of a page against a standard, here WCAG 2.2, recording each defect against the success criterion it fails. <a href="../chapters/04-auditing-and-fixing.html" class="quarto-xref"><span>Chapter 4</span></a> runs one.
+</dd>
+<dt><span id="gloss-axe-devtools">axe DevTools</span></dt>
+<dd>
+The browser extension from Deque that scans a page against its accessibility rules and lists what it found by rule, element and WCAG criterion. Installing it is in <a href="a-setup.html" class="quarto-xref"><span>Appendix A</span></a>; <a href="../chapters/04-auditing-and-fixing.html" class="quarto-xref"><span>Chapter 4</span></a> runs it.
+</dd>
+<dt><span id="gloss-backlog">Backlog</span></dt>
+<dd>
+The CSV file of things to fix, one row each, with the evidence that justifies the row. Its columns are defined in <a href="../chapters/02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a> and nowhere else.
+</dd>
+<dt><span id="gloss-branch">Branch</span></dt>
+<dd>
+A named line of commits in git. Your work lives on one called <code>work</code>, made from the starting tag as <a href="a-setup.html" class="quarto-xref"><span>Appendix A</span></a> says, and each chapter's tag is merged into it.
+</dd>
+<dt><span id="gloss-browse-mode-and-focus-mode">Browse mode and focus mode</span></dt>
+<dd>
+The two states of a screen reader on a web page. In browse mode single keys move about the page, H to the next heading for instance; in focus mode keystrokes go to the control that has focus. The key that switches is in <a href="d-accessibility-testing.html" class="quarto-xref"><span>Appendix E</span></a>.
+</dd>
+<dt><span id="gloss-commit">Commit</span></dt>
+<dd>
+A recorded snapshot of the files, with a message, on a branch; also the act of making one. Every chapter ends with one, and the portfolio's links resolve against a named commit.
+</dd>
+<dt><span id="gloss-consent">Consent</span></dt>
+<dd>
+A participant's agreement to take part after being told what will be recorded, kept and deleted, and that they can stop at any time. For a short interview between classmates spoken consent is enough; the form in <a href="g-consent-form.html" class="quarto-xref"><span>Appendix H</span></a> records that it was given.
+</dd>
+<dt><span id="gloss-contrast-ratio">Contrast ratio</span></dt>
+<dd>
+The ratio between the luminance of text or a control and its background, from 1:1 to 21:1. WCAG asks 4.5:1 for normal text and 3:1 for large text, controls and focus indicators.
+</dd>
+<dt><span id="gloss-cookie">Cookie</span></dt>
+<dd>
+A small named value the server asks the browser to keep and send back with every later request. The reference code sets one, <code>sid</code>, so that a participant's rows in the metrics file can be grouped; it holds a short random code, never a name, and <a href="../chapters/07-instrumentation.html" class="quarto-xref"><span>Chapter 7</span></a> sets it to the participant code before a session.
+</dd>
+<dt><span id="gloss-counterbalancing">Counterbalancing</span></dt>
+<dd>
+Giving half the participants one order of conditions and half the other, so that the order effect falls evenly on both; <a href="../chapters/08-pilots.html" class="quarto-xref"><span>Chapter 8</span></a> starts two participants with HTMX and two with JavaScript off.
+</dd>
+<dt><span id="gloss-crit">Crit</span></dt>
+<dd>
+A session in which one person presents one piece of work with its evidence and the audience responds to the evidence. <a href="../chapters/11-crit.html" class="quarto-xref"><span>Chapter 11</span></a>.
+</dd>
+<dt><span id="gloss-css-rule">CSS rule</span></dt>
+<dd>
+A selector and a block of declarations, such as <code>button { color: white }</code>: the selector says which elements the rule applies to, and the declarations say what they look like. The reference code's own rules are in <code>static/css/app.css</code>, under the Pico stylesheet.
+</dd>
+<dt><span id="gloss-csv">CSV</span></dt>
+<dd>
+Comma-separated values: a plain-text table with one row per line and commas between the cells, which a spreadsheet opens and a program reads. The backlog, the metrics file and the regression record are all CSV.
+</dd>
+<dt><span id="gloss-curl">curl</span></dt>
+<dd>
+A command-line program that sends an HTTP request and prints the response; the chapters use it from a second terminal to see exactly what the server answers. <a href="a-setup.html" class="quarto-xref"><span>Appendix A</span></a> says where to run it on Windows.
+</dd>
+<dt><span id="gloss-debounce">Debounce</span></dt>
+<dd>
+Waiting for a pause before acting, so that a stream of keystrokes produces one request rather than one per key; <code>delay:300ms</code> in the filter's <code>hx-trigger</code> is one.
+</dd>
+<dt><span id="gloss-debrief">Debrief</span></dt>
+<dd>
+The conversation with a participant immediately after a pilot session, in which they say what was hard and why. Debrief notes carry the explanation that the metrics file cannot.
+</dd>
+<dt><span id="gloss-developer-tools">Developer tools</span></dt>
+<dd>
+The panels every browser opens with F12: Network, Console, Elements and the accessibility pane among them. <a href="a-setup.html" class="quarto-xref"><span>Appendix A</span></a> says which the book uses and what for.
+</dd>
+<dt><span id="gloss-diff">Diff</span></dt>
+<dd>
+The lines that differ between two versions of the files, as <code>git diff</code> prints them: a line removed, a line added. A change is shown as its diff, and <code>git diff &lt;tag&gt; &lt;tag&gt;</code> shows what a chapter adds.
+</dd>
+<dt><span id="gloss-dom">DOM</span></dt>
+<dd>
+The Document Object Model: the tree of elements the browser builds from the HTML and that scripts, HTMX included, read and change. An automated checker reads it; a screen reader reads the accessibility tree built from it.
+</dd>
+<dt><span id="gloss-error-rate">Error rate</span></dt>
+<dd>
+The proportion of requests for a task that ended in an error, or of saves for the edit task. Defined with the other metrics in <a href="h-evaluation-metrics.html" class="quarto-xref"><span>Appendix I</span></a>.
+</dd>
+<dt><span id="gloss-error-summary">Error summary</span></dt>
+<dd>
+A block at the top of a form, after a failed submit, listing each error with a link to the field it belongs to. The plain path relies on it because there is no live region to announce the error.
+</dd>
+<dt><span id="gloss-evidence-chain">Evidence chain</span></dt>
+<dd>
+The four links from a finding to the measurement that showed it, the change that addressed it and the verification that the change worked, as <a href="../chapters/10-redesign-and-verification.html" class="quarto-xref"><span>Chapter 10</span></a> names them. Each link is a file, and each later link points back at the earlier one.
+</dd>
+<dt><span id="gloss-facilitator">Facilitator</span></dt>
+<dd>
+The person who runs a pilot session: reads the tasks, keeps time, does not help. The note-taker is the other person, writing down what the facilitator cannot watch for.
+</dd>
+<dt><span id="gloss-finding">Finding</span></dt>
+<dd>
+A paragraph in <code>research/findings.md</code> making a claim about what happened in the pilots, with its source: "participants without JavaScript failed the edit task in two of four saves", with the rows that show it. A backlog row points at a finding.
+</dd>
+<dt><span id="gloss-focus">Focus</span></dt>
+<dd>
+The one element on the page that receives keystrokes. Tab moves it forward and Shift-Tab back, and the focus ring shows where it is. A region that focus can enter and not leave is a keyboard trap. After a swap replaces the focused element, focus falls to the document unless something puts it elsewhere.
+</dd>
+<dt><span id="gloss-fragment">Fragment</span></dt>
+<dd>
+A piece of HTML without the page around it, returned to an HTMX request and swapped into the page. The same template renders the fragment and the matching part of the full page.
+</dd>
+<dt><span id="gloss-handler">Handler</span></dt>
+<dd>
+The function a route runs to build its response: read the request, do the work, send the page or the fragment. In the reference code every handler answers both modes.
+</dd>
+<dt><span id="gloss-heuristic">Heuristic</span></dt>
+<dd>
+A rule of thumb for judging a design without testing it with people; Nielsen's ten usability heuristics are the set the book names, and the first, visibility of system status, is the one the status region serves.
+</dd>
+<dt><span id="gloss-hex-characters">Hex characters</span></dt>
+<dd>
+The sixteen digits of base sixteen, 0 to 9 and a to f. The session cookie's default value is six of them.
+</dd>
+<dt><span id="gloss-hosting-service">Hosting service</span></dt>
+<dd>
+Where a repository lives away from your machine: GitHub, GitLab or an institution's own forge. Your module names one; the portfolio's links are read on its web view.
+</dd>
+<dt><span id="gloss-html-form">HTML form</span></dt>
+<dd>
+A <code>&lt;form&gt;</code> element with an <code>action</code> and a <code>method</code>, holding controls such as <code>&lt;input&gt;</code> and <code>&lt;button&gt;</code>; submitting it sends each control's name and value to the action's URL by that method. Every interaction in this book begins as one.
+</dd>
+<dt><span id="gloss-htmx">HTMX</span></dt>
+<dd>
+A JavaScript library that lets HTML attributes such as <code>hx-get</code>, <code>hx-post</code>, <code>hx-target</code> and <code>hx-swap</code> make requests and swap the returned HTML into the page. The attributes the book uses are in <a href="c-htmx-patterns.html" class="quarto-xref"><span>Appendix D</span></a>.
+</dd>
+<dt><span id="gloss-hx-request"><code>HX-Request</code></span></dt>
+<dd>
+The header HTMX sends with every request it makes. The server uses it to decide between returning a fragment and a full page; a plain form submission does not carry it.
+</dd>
+<dt><span id="gloss-hypermedia">Hypermedia</span></dt>
+<dd>
+HTML that carries its own controls, links and forms, telling the browser what can be done next. The server returns hypermedia, not data for a client to render; <a href="https://hypermedia.systems/"><em>Hypermedia Systems</em></a> is the long form of the argument.
+</dd>
+<dt><span id="gloss-inclusion-risk">Inclusion risk</span></dt>
+<dd>
+The backlog column naming who is excluded by a defect; its values are in <a href="../chapters/02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a>.
+</dd>
+<dt><span id="gloss-instrumentation">Instrumentation</span></dt>
+<dd>
+Code in the server that records one row per request to a metrics file, with the task, outcome, duration and mode, and nothing that identifies a participant. <a href="../chapters/07-instrumentation.html" class="quarto-xref"><span>Chapter 7</span></a> builds it.
+</dd>
+<dt><span id="gloss-job-story">Job story</span></dt>
+<dd>
+A need written as a situation, a motivation, an outcome and the constraint behind them: "When ..., I want to ..., so I can ..., because ...". <a href="../chapters/02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a> uses the form in place of personas and user stories.
+</dd>
+<dt><span id="gloss-ktor">Ktor</span></dt>
+<dd>
+The Kotlin web framework the reference code uses for routing and responses; its <a href="https://ktor.io/docs/server-routing.html">routing documentation</a> is the reference for the calls the book names.
+</dd>
+<dt><span id="gloss-landmark">Landmark</span></dt>
+<dd>
+A region of the page with a role a screen reader can jump to: <code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>. The skip link targets the <code>main</code> landmark.
+</dd>
+<dt><span id="gloss-level-a-aa-and-aaa">Level A, AA and AAA</span></dt>
+<dd>
+WCAG's three conformance levels. Each success criterion has one: A is the minimum, AA is what this book works to, and AAA is beyond its scope.
+</dd>
+<dt><span id="gloss-live-region">Live region</span></dt>
+<dd>
+An element with <code>aria-live</code>, or a role such as <code>status</code> or <code>alert</code>, whose changes a screen reader announces without focus moving. The status message after adding a task is one; it must be the same element before and after a swap or the announcement is lost.
+</dd>
+<dt><span id="gloss-mad">MAD</span></dt>
+<dd>
+Median absolute deviation: the median of each value's distance from the median. A measure of spread that one slow participant does not dominate, which is why the book pairs it with the median rather than using the mean and standard deviation.
+</dd>
+<dt><span id="gloss-median">Median</span></dt>
+<dd>
+The middle value when the values are sorted, with half above it and half below. One extreme value does not pull it as it pulls the mean.
+</dd>
+<dt><span id="gloss-metrics-file">Metrics file</span></dt>
+<dd>
+The CSV the instrumentation writes, one row per request. Its columns are defined once, in the reference code, and <a href="../chapters/07-instrumentation.html" class="quarto-xref"><span>Chapter 7</span></a> says where.
+</dd>
+<dt><span id="gloss-needs-finding">Needs-finding</span></dt>
+<dd>
+Finding out what people are trying to do and what stops them, by asking and watching, before deciding what to build.
+</dd>
+<dt><span id="gloss-netty">Netty</span></dt>
+<dd>
+The HTTP server engine that Ktor runs on. <code>main</code> starts it on the port and nothing else in the book touches it.
+</dd>
+<dt><span id="gloss-order-effect">Order effect</span></dt>
+<dd>
+The difference a second attempt makes because the participant has just done the task once; in a within-subject design it has to be counterbalanced and named when reporting.
+</dd>
+<dt><span id="gloss-out-of-band-swap">Out-of-band swap</span></dt>
+<dd>
+An element in an HTMX response marked <code>hx-swap-oob</code>, which HTMX swaps into the page by its <code>id</code> in addition to the main target. The book uses it to update the status message from any response.
+</dd>
+<dt><span id="gloss-parity">Parity</span></dt>
+<dd>
+The requirement that every task that can be completed with JavaScript on can be completed with it off, ending in the same state. <a href="../chapters/06-parity-and-validation.html" class="quarto-xref"><span>Chapter 6</span></a> checks it.
+</dd>
+<dt><span id="gloss-partial">Partial</span></dt>
+<dd>
+A template that renders one part of a page, named with a leading underscore, included by the page template and rendered on its own for a fragment. <a href="../chapters/05-partials-and-pagination.html" class="quarto-xref"><span>Chapter 5</span></a> introduces them.
+</dd>
+<dt><span id="gloss-participant">Participant</span></dt>
+<dd>
+A person who takes part in an interview or a pilot. The book's word for them; not "user", "subject" or "tester".
+</dd>
+<dt><span id="gloss-participant-code">Participant code</span></dt>
+<dd>
+The code a participant is known by in every file, P1, P2 and so on, assigned when consent is given; a pseudonym in the data-protection sense (<a href="e-privacy-and-consent.html" class="quarto-xref"><span>Appendix F</span></a>). The only identity a participant has in the repository.
+</dd>
+<dt><span id="gloss-pebble">Pebble</span></dt>
+<dd>
+The template engine the reference code uses to render HTML on the server. Its syntax is in <a href="b-pebble.html" class="quarto-xref"><span>Appendix C</span></a>.
+</dd>
+<dt><span id="gloss-people-centred-language">People-centred language</span></dt>
+<dd>
+Naming the person and the situation rather than a label: "a person using a screen reader", not "a blind user". The situation is what the design has to work in, and it catches people the label would leave out.
+</dd>
+<dt><span id="gloss-persona">Persona</span></dt>
+<dd>
+A fictional person standing for a group of users, "a blind user" for instance. The book uses job stories instead, because a persona puts a label where the situation should be.
+</dd>
+<dt><span id="gloss-personal-data">Personal data</span></dt>
+<dd>
+Anything that identifies a living person, alone or with other information: a name, an email address, a student number, a face, a voice. The repository holds none of it; <a href="e-privacy-and-consent.html" class="quarto-xref"><span>Appendix F</span></a> has the rules.
+</dd>
+<dt><span id="gloss-pilot">Pilot</span></dt>
+<dd>
+A session in which a participant attempts set tasks on the instrumented application while you take notes. <a href="../chapters/08-pilots.html" class="quarto-xref"><span>Chapter 8</span></a> runs them; the first pilots evaluate, and the re-pilot verifies a fix.
+</dd>
+<dt><span id="gloss-plain-path">Plain path</span></dt>
+<dd>
+The way an interaction works with JavaScript off: a plain form submission, a server response and a full page. Every interaction in the book has one, and the enhanced path, with HTMX, is an enhancement of it.
+</dd>
+<dt><span id="gloss-portfolio">Portfolio</span></dt>
+<dd>
+The README of your repository and the files it links to, at a named tag. <a href="../chapters/12-portfolio.html" class="quarto-xref"><span>Chapter 12</span></a>.
+</dd>
+<dt><span id="gloss-post-redirect-get">Post/Redirect/Get</span></dt>
+<dd>
+The pattern in which a successful form POST answers with a redirect to a GET, so that refreshing the page fetches again rather than submitting again. Every form in the book ends this way on the plain path.
+</dd>
+<dt><span id="gloss-prioritisation-score">Prioritisation score</span></dt>
+<dd>
+The score <a href="../chapters/02-needs-finding-and-consent.html" class="quarto-xref"><span>Chapter 2</span></a> defines from severity, the groups caught and the WCAG level, which <a href="../chapters/09-analysis-and-prioritisation.html" class="quarto-xref"><span>Chapter 9</span></a> ranks by, with the cost of a change deciding between rows of equal score.
+</dd>
+<dt><span id="gloss-progressive-enhancement">Progressive enhancement</span></dt>
+<dd>
+Building the page so that HTML alone does the job, then adding CSS and JavaScript for the browsers that run them, without the baseline depending on the additions; the <a href="https://www.gov.uk/service-manual/technology/using-progressive-enhancement">GOV.UK service manual</a> requires it.
+</dd>
+<dt><span id="gloss-query-string">Query string</span></dt>
+<dd>
+The part of a URL after <code>?</code>, holding named values such as <code>?q=report&amp;page=2</code>. The reference code carries the filter, the page and an error code in it, never a message.
+</dd>
+<dt><span id="gloss-re-pilot">Re-pilot</span></dt>
+<dd>
+A pilot run after a change, with the same tasks, to see whether the measurement moved.
+</dd>
+<dt><span id="gloss-readme">README</span></dt>
+<dd>
+The file at the root of a repository that its hosting service shows first. The portfolio is the README of your repository and the files it links to.
+</dd>
+<dt><span id="gloss-redirect">Redirect</span></dt>
+<dd>
+A response that tells the browser to fetch another URL instead of showing a body, here always <code>303 See Other</code> with a <code>Location</code> header after a successful form submission. The browser follows it with a GET.
+</dd>
+<dt><span id="gloss-regression-check">Regression check</span></dt>
+<dd>
+A check run after a change to confirm that something that worked still works. The twenty for this application are in <a href="../chapters/10-redesign-and-verification.html" class="quarto-xref"><span>Chapter 10</span></a>.
+</dd>
+<dt><span id="gloss-request-header">Request header</span></dt>
+<dd>
+A line a browser or script sends with a request, such as <code>HX-Request: true</code>, that describes the request without being part of its body. The server reads it to decide how to answer.
+</dd>
+<dt><span id="gloss-route">Route</span></dt>
+<dd>
+A method and a path the server answers, with the handler that answers it: <code>get("/tasks")</code> in <code>TaskRoutes.kt</code> is one. Every route in the reference code has a plain and an enhanced answer.
+</dd>
+<dt><span id="gloss-screen-reader">Screen reader</span></dt>
+<dd>
+Software that reads the accessibility tree aloud or to a braille display and lets a person navigate it from the keyboard. The book uses NVDA, VoiceOver and Orca, one per platform; installing them is in <a href="a-setup.html" class="quarto-xref"><span>Appendix A</span></a>.
+</dd>
+<dt><span id="gloss-seed-data">Seed data</span></dt>
+<dd>
+The tasks the list holds at the start of every pilot session, kept in <code>research/seed-tasks.csv</code> and copied back before each participant, so that every scenario names a task that is there.
+</dd>
+<dt><span id="gloss-semantic-html">Semantic HTML</span></dt>
+<dd>
+Using the element that means the thing: <code>button</code> for an action, <code>a</code> for a link, <code>label</code> for a label, <code>main</code> for the main content. It gives the accessibility tree the right roles without ARIA.
+</dd>
+<dt><span id="gloss-server-first">Server-first</span></dt>
+<dd>
+The approach in which the server renders every page and fragment and the browser is enhanced, not relied on. <a href="../chapters/01-server-first.html" class="quarto-xref"><span>Chapter 1</span></a> makes the case.
+</dd>
+<dt><span id="gloss-skip-link">Skip link</span></dt>
+<dd>
+The first link on the page, visible when focused, that moves focus past the header to the main content (WCAG 2.4.1).
+</dd>
+<dt><span id="gloss-status-code">Status code</span></dt>
+<dd>
+The three-digit number at the start of an HTTP response: 200 for a page or fragment, 303 for a redirect, 404 for nothing found, 405 for a method the route does not take. The reference code answers a failed validation with 200 on purpose, for the reason <a href="../chapters/06-parity-and-validation.html" class="quarto-xref"><span>Chapter 6</span></a> gives.
+</dd>
+<dt><span id="gloss-status-message">Status message</span></dt>
+<dd>
+Text that tells the person what just happened, such as the message after adding a task, without taking their focus. WCAG 4.1.3 asks that it is announced to a screen reader, which the live region does.
+</dd>
+<dt><span id="gloss-success-criterion">Success criterion</span></dt>
+<dd>
+One testable statement in WCAG, numbered like 2.1.1, with a level. A defect is recorded against the criterion it fails.
+</dd>
+<dt><span id="gloss-tag">Tag</span></dt>
+<dd>
+A name for one commit in git. The reference code has a tag for each state the book teaches from; your portfolio is submitted at a tag you name.
+</dd>
+<dt><span id="gloss-task-code">Task code</span></dt>
+<dd>
+The short identifier the instrumentation writes for each task a participant attempts, so that rows can be grouped by task. The codes are defined once, in the reference code.
+</dd>
+<dt><span id="gloss-template">Template</span></dt>
+<dd>
+A file of HTML with placeholders that the server fills from a map of values before sending it; the reference code's templates are Pebble files under <code>templates/</code>. A partial is a template for one part of a page.
+</dd>
+<dt><span id="gloss-think-aloud">Think-aloud</span></dt>
+<dd>
+A usability-testing method in which the participant narrates what they are doing and thinking. The book's pilots do not use it, because narrating changes the times being measured.
+</dd>
+<dt><span id="gloss-time-on-task">Time on task</span></dt>
+<dd>
+How long a participant took to complete a task. <a href="h-evaluation-metrics.html" class="quarto-xref"><span>Appendix I</span></a> says how it is computed from the metrics file, and how it differs from the server's handling time for one request.
+</dd>
+<dt><span id="gloss-usability">Usability</span></dt>
+<dd>
+Whether people can use a thing to do what they set out to do: ISO 9241-11 defines it as effectiveness, efficiency and satisfaction, which the book measures as completion, time on task and confidence.
+</dd>
+<dt><span id="gloss-uuid">UUID</span></dt>
+<dd>
+A universally unique identifier, a 36-character random id such as <code>00000000-0000-4000-8000-000000000001</code>. Every task has one, so two tasks never share an id and an id says nothing about how many there are.
+</dd>
+<dt><span id="gloss-validation">Validation</span></dt>
+<dd>
+Checking submitted input on the server and returning the error with the form, in both paths. A check in the browser is an enhancement; the server's is the one that counts.
+</dd>
+<dt><span id="gloss-wcag">WCAG</span></dt>
+<dd>
+The Web Content Accessibility Guidelines, version 2.2, the <a href="https://www.w3.org/TR/WCAG22/">W3C recommendation</a> the book audits against.
+</dd>
+<dt><span id="gloss-within-subject-design">Within-subject design</span></dt>
+<dd>
+An experimental design in which every participant experiences every condition, so that the comparison is between a person's own attempts rather than between two groups of people. <a href="../chapters/08-pilots.html" class="quarto-xref"><span>Chapter 8</span></a> uses one, with the two modes as the conditions.
+</dd>
+</dl>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../appendices/i-screenshot-evidence.html" class="pagination-link" aria-label="Screenshot evidence">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">Screenshot evidence</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../appendices/k-learning-outcomes.html" class="pagination-link" aria-label="Learning outcomes">
+        <span class="nav-page-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">Learning outcomes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
